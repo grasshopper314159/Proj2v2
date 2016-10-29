@@ -29,10 +29,25 @@ import java.util.Calendar;
  * @author Brahma Dathan and Sarnath Ramnath
  *
  */
-public class Book extends LoanableItem implements Serializable,
-		Matchable<String> {
+public class Book extends LoanableItem implements Serializable, Matchable<String> {
 	private static final long serialVersionUID = 1L;
 	private String author;
+	private boolean isReserved = false;
+
+	/**
+	 * @return the isReserved
+	 */
+	public boolean isReserved() {
+		return isReserved;
+	}
+
+	/**
+	 * @param isReserved
+	 *            the isReserved to set
+	 */
+	public void setReserved(boolean isReserved) {
+		this.isReserved = isReserved;
+	}
 
 	/**
 	 * Creates a book with the given id, title, and author name
@@ -80,8 +95,7 @@ public class Book extends LoanableItem implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " author " + author + " borrowed by "
-				+ borrowedBy;
+		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
 	}
 
 	/**
