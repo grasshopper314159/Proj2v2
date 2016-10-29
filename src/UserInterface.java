@@ -202,6 +202,7 @@ public class UserInterface {
 		System.out.println(SAVE + " to  save data");
 		System.out.println(RETRIEVE + " to  retrieve");
 		System.out.println(PRINT_FORMATTED + " to  print items formatted");
+		System.out.println(PRINT_OVERDUE + " to print items that are overdue");
 		System.out.println(HELP + " for help");
 	}
 
