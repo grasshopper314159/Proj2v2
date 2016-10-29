@@ -85,4 +85,22 @@ public class PrintFormat implements LoanableItemVisitor {
 		}
 	}
 
+	@Override
+	public void visit(DVD dvd) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void visit(Laptop laptop) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void visit(Camera camera) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

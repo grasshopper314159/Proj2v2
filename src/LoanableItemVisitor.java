@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
 
@@ -50,4 +51,10 @@ public interface LoanableItemVisitor {
 	 *            the Periodical to be processed
 	 */
 	public void visit(Periodical periodical);
+
+	public void visit(DVD dvd);
+
+	public void visit(Laptop laptop);
+
+	public void visit(Camera camera);
 }

@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
 
@@ -38,6 +39,7 @@ public class Member implements Serializable, Matchable<String> {
 	private String address;
 	private String phone;
 	private String id;
+	private double balance = 0;
 	private static final String MEMBER_STRING = "M";
 	private List<LoanableItem> itemsBorrowed = new LinkedList<LoanableItem>();
 	private List<Hold> itemsOnHold = new LinkedList<Hold>();
@@ -70,8 +72,7 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public boolean issue(LoanableItem loanableItem) {
 		if (itemsBorrowed.add(loanableItem)) {
-			transactions.add(new Transaction("Book issued ", loanableItem
-					.getTitle()));
+			transactions.add(new Transaction("Book issued ", loanableItem.getTitle()));
 			return true;
 		}
 		return false;
@@ -86,8 +87,7 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public boolean returnItem(LoanableItem loanableItem) {
 		if (itemsBorrowed.remove(loanableItem)) {
-			transactions.add(new Transaction("Item returned ", loanableItem
-					.getTitle()));
+			transactions.add(new Transaction("Item returned ", loanableItem.getTitle()));
 			return true;
 		}
 		return false;
@@ -101,13 +101,11 @@ public class Member implements Serializable, Matchable<String> {
 	 * @return true iff the item could be renewed
 	 */
 	public boolean renew(LoanableItem loanableItem) {
-		for (ListIterator<LoanableItem> iterator = itemsBorrowed.listIterator(); iterator
-				.hasNext();) {
+		for (ListIterator<LoanableItem> iterator = itemsBorrowed.listIterator(); iterator.hasNext();) {
 			LoanableItem aLoanableItem = iterator.next();
 			String id = aLoanableItem.getId();
 			if (id.equals(loanableItem.getId())) {
-				transactions.add(new Transaction("Item renewed ", loanableItem
-						.getTitle()));
+				transactions.add(new Transaction("Item renewed ", loanableItem.getTitle()));
 				return true;
 			}
 		}
@@ -130,8 +128,7 @@ public class Member implements Serializable, Matchable<String> {
 	 *            the book to be placed a hold
 	 */
 	public void placeHold(Hold hold) {
-		transactions.add(new Transaction("Hold Placed ", hold.getLoanableItem()
-				.getTitle()));
+		transactions.add(new Transaction("Hold Placed ", hold.getLoanableItem().getTitle()));
 		itemsOnHold.add(hold);
 	}
 
@@ -143,13 +140,11 @@ public class Member implements Serializable, Matchable<String> {
 	 * @return true iff the hold could be removed
 	 */
 	public boolean removeHold(String itemId) {
-		for (ListIterator<Hold> iterator = itemsOnHold.listIterator(); iterator
-				.hasNext();) {
+		for (ListIterator<Hold> iterator = itemsOnHold.listIterator(); iterator.hasNext();) {
 			Hold hold = iterator.next();
 			String id = hold.getLoanableItem().getId();
 			if (id.equals(itemId)) {
-				transactions.add(new Transaction("Hold Removed ", hold
-						.getLoanableItem().getTitle()));
+				transactions.add(new Transaction("Hold Removed ", hold.getLoanableItem().getTitle()));
 				iterator.remove();
 				return true;
 			}
@@ -166,8 +161,7 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public Iterator<Transaction> getTransactions(Calendar date) {
 		List<Transaction> result = new LinkedList<Transaction>();
-		for (Iterator<Transaction> iterator = transactions.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
 			Transaction transaction = iterator.next();
 			if (transaction.onDate(date)) {
 				result.add(transaction);
@@ -261,23 +255,19 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	@Override
 	public String toString() {
-		String string = "Member name " + name + " address " + address + " id "
-				+ id + "phone " + phone;
+		String string = "Member name " + name + " address " + address + " id " + id + "phone " + phone;
 		string += " borrowed: [";
-		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
 			string += " " + item.getTitle();
 		}
 		string += "] holds: [";
-		for (Iterator<Hold> iterator = itemsOnHold.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Hold> iterator = itemsOnHold.iterator(); iterator.hasNext();) {
 			Hold hold = iterator.next();
 			string += " " + hold.getLoanableItem().getTitle();
 		}
 		string += "] transactions: [";
-		for (Iterator<Transaction> iterator = transactions.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<Transaction> iterator = transactions.iterator(); iterator.hasNext();) {
 			string += iterator.next();
 		}
 		string += "]";
@@ -293,5 +283,19 @@ public class Member implements Serializable, Matchable<String> {
 	@Override
 	public boolean matches(String key) {
 		return id.equals(key);
+	}
+
+	/**
+	 * @return the balance
+	 */
+	public double getBalance() {
+		return balance;
+	}
+
+	/**
+	 * @param balance the balance to set
+	 */
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 }
