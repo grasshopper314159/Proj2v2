@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
 
@@ -38,8 +39,7 @@ import java.util.StringTokenizer;
  */
 public class UserInterface {
 	private static UserInterface userInterface;
-	private BufferedReader reader = new BufferedReader(new InputStreamReader(
-			System.in));
+	private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Library library;
 	private static final int EXIT = 0;
 	private static final int ADD_MEMBER = 1;
@@ -55,7 +55,8 @@ public class UserInterface {
 	private static final int SAVE = 11;
 	private static final int RETRIEVE = 12;
 	private static final int PRINT_FORMATTED = 13;
-	private static final int HELP = 14;
+	private static final int PRINT_OVERDUE = 14;
+	private static final int HELP = 15;
 
 	/**
 	 * Made private for singleton pattern. Conditionally looks for any saved
@@ -153,8 +154,7 @@ public class UserInterface {
 			try {
 				Calendar date = new GregorianCalendar();
 				String item = getToken(prompt);
-				DateFormat dateFormat = SimpleDateFormat
-						.getDateInstance(DateFormat.SHORT);
+				DateFormat dateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT);
 				date.setTime(dateFormat.parse(item));
 				return date;
 			} catch (Exception fe) {
@@ -172,8 +172,7 @@ public class UserInterface {
 	public int getCommand() {
 		do {
 			try {
-				int value = Integer.parseInt(getToken("Enter command:" + HELP
-						+ " for help"));
+				int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
 				if (value >= EXIT && value <= HELP) {
 					return value;
 				}
@@ -188,8 +187,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out
-				.println("Enter a number between 0 and 12 as explained below:");
+		System.out.println("Enter a number between 0 and 12 as explained below:");
 		System.out.println(EXIT + " to Exit\n");
 		System.out.println(ADD_MEMBER + " to add a member");
 		System.out.println(ADD_BOOKS + " to  add books");
@@ -236,8 +234,7 @@ public class UserInterface {
 		do {
 			int type;
 			do {
-				type = getNumber("Enter " + Library.BOOK + " for book or "
-						+ Library.PERIODICAL + " for periodical");
+				type = getNumber("Enter " + Library.BOOK + " for book or " + Library.PERIODICAL + " for periodical");
 			} while (type != Library.BOOK && type != Library.PERIODICAL);
 			String title = getToken("Enter title");
 			String author = "";
@@ -274,8 +271,7 @@ public class UserInterface {
 			String bookID = getToken("Enter book id");
 			result = library.issueLoanableItem(memberID, bookID);
 			if (result != null) {
-				System.out.println(result.getTitle() + "   "
-						+ result.getDueDate());
+				System.out.println(result.getTitle() + "   " + result.getDueDate());
 			} else {
 				System.out.println("Book could not be issued");
 			}
@@ -304,8 +300,7 @@ public class UserInterface {
 			if (yesOrNo(book.getTitle())) {
 				result = library.renewItem(book.getId(), memberID);
 				if (result != null) {
-					System.out.println(result.getTitle() + "   "
-							+ result.getDueDate());
+					System.out.println(result.getTitle() + "   " + result.getDueDate());
 				} else {
 					System.out.println("Book is not renewable");
 				}
@@ -477,8 +472,7 @@ public class UserInterface {
 		} else {
 			while (result.hasNext()) {
 				Transaction transaction = result.next();
-				System.out.println(transaction.getType() + "   "
-						+ transaction.getTitle() + "\n");
+				System.out.println(transaction.getType() + "   " + transaction.getTitle() + "\n");
 			}
 			System.out.println("\n  There are no more transactions \n");
 		}
@@ -491,8 +485,7 @@ public class UserInterface {
 	 */
 	private void save() {
 		if (Library.save()) {
-			System.out
-					.println(" The library has been successfully saved in the file LibraryData \n");
+			System.out.println(" The library has been successfully saved in the file LibraryData \n");
 		} else {
 			System.out.println(" There has been an error in saving \n");
 		}
@@ -507,8 +500,7 @@ public class UserInterface {
 		try {
 			Library tempLibrary = Library.retrieve();
 			if (tempLibrary != null) {
-				System.out
-						.println(" The library has been successfully retrieved from the file LibraryData \n");
+				System.out.println(" The library has been successfully retrieved from the file LibraryData \n");
 				library = tempLibrary;
 			} else {
 				System.out.println("File doesnt exist; creating new library");
@@ -524,6 +516,10 @@ public class UserInterface {
 	 * Prints the items in a unique format for each type of item.
 	 */
 	public void printFormatted() {
+		library.processLoanableItems(PrintFormat.instance());
+	}
+
+	public void printOverdue() {
 		library.processLoanableItems(PrintFormat.instance());
 	}
 
@@ -575,6 +571,9 @@ public class UserInterface {
 				break;
 			case PRINT_FORMATTED:
 				printFormatted();
+				break;
+			case PRINT_OVERDUE:
+				printOverdue();
 				break;
 			case HELP:
 				help();

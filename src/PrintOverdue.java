@@ -29,13 +29,13 @@ import java.util.GregorianCalendar;
  * @author Brahma Dathan
  *
  */
-public class PrintFormat implements LoanableItemVisitor {
-	private static PrintFormat visitor;
+public class PrintOverdue implements LoanableItemVisitor {
+	private static PrintOverdue visitor;
 
 	/**
 	 * The constructor is for the singleton pattern
 	 */
-	private PrintFormat() {
+	private PrintOverdue() {
 	}
 
 	/**
@@ -43,9 +43,9 @@ public class PrintFormat implements LoanableItemVisitor {
 	 * 
 	 * @return the instance of the class
 	 */
-	public static PrintFormat instance() {
+	public static PrintOverdue instance() {
 		if (visitor == null) {
-			visitor = new PrintFormat();
+			visitor = new PrintOverdue();
 		}
 		return visitor;
 	}
