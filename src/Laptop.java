@@ -29,8 +29,7 @@ import java.util.Calendar;
  * @author Brahma Dathan and Sarnath Ramnath
  *
  */
-public class Laptop extends LoanableItem implements Serializable,
-		Matchable<String> {
+public class Laptop extends LoanableItem implements Serializable, Matchable<String> {
 	private static final long serialVersionUID = 1L;
 	private String author;
 
@@ -59,7 +58,7 @@ public class Laptop extends LoanableItem implements Serializable,
 	@Override
 	public boolean issue(Member member) {
 		if (super.issue(member)) {
-			dueDate.add(Calendar.MONTH, 1);
+			dueDate.add(Calendar.HOUR, 3);
 			return true;
 		}
 		return false;
@@ -80,8 +79,7 @@ public class Laptop extends LoanableItem implements Serializable,
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " author " + author + " borrowed by "
-				+ borrowedBy;
+		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
 	}
 
 	/**

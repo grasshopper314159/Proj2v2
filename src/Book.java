@@ -74,7 +74,11 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	@Override
 	public boolean issue(Member member) {
 		if (super.issue(member)) {
-			dueDate.add(Calendar.MONTH, 1);
+			if (isReserved != true) {
+				dueDate.add(Calendar.MONTH, 1);
+			} else {
+				dueDate.add(Calendar.HOUR, 2);
+			}
 			return true;
 		}
 		return false;
