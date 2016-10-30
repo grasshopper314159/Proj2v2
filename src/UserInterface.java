@@ -285,14 +285,14 @@ public class UserInterface {
 			return;
 		}
 		do {
-			String bookID = getToken("Enter book id");
+			String bookID = getToken("Enter item id");
 			result = library.issueLoanableItem(memberID, bookID);
 			if (result != null) {
 				System.out.println(result.getTitle() + "   " + result.getDueDate());
 			} else {
-				System.out.println("Book could not be issued");
+				System.out.println("Item could not be issued");
 			}
-			if (!yesOrNo("Issue more books?")) {
+			if (!yesOrNo("Issue more items?")) {
 				break;
 			}
 		} while (true);
