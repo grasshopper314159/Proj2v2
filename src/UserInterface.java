@@ -47,16 +47,17 @@ public class UserInterface {
 	private static final int ISSUE_BOOKS = 3;
 	private static final int RETURN_BOOKS = 4;
 	private static final int RENEW_BOOKS = 5;
-	private static final int REMOVE_BOOKS = 6;
-	private static final int PLACE_HOLD = 7;
-	private static final int REMOVE_HOLD = 8;
-	private static final int PROCESS_HOLD = 9;
-	private static final int GET_TRANSACTIONS = 10;
-	private static final int SAVE = 11;
-	private static final int RETRIEVE = 12;
-	private static final int PRINT_FORMATTED = 13;
-	private static final int PRINT_OVERDUE = 14;
-	private static final int HELP = 15;
+	private static final int REMOVE_MEMBERS = 6;
+	private static final int REMOVE_BOOKS = 7;
+	private static final int PLACE_HOLD = 8;
+	private static final int REMOVE_HOLD = 9;
+	private static final int PROCESS_HOLD = 10;
+	private static final int GET_TRANSACTIONS = 11;
+	private static final int SAVE = 12;
+	private static final int RETRIEVE = 13;
+	private static final int PRINT_FORMATTED = 14;
+	private static final int PRINT_OVERDUE = 15;
+	private static final int HELP = 16;
 
 	/**
 	 * Made private for singleton pattern. Conditionally looks for any saved
@@ -194,7 +195,8 @@ public class UserInterface {
 		System.out.println(ISSUE_BOOKS + " to  issue books to a  member");
 		System.out.println(RETURN_BOOKS + " to  return books ");
 		System.out.println(RENEW_BOOKS + " to  renew books ");
-		System.out.println(REMOVE_BOOKS + " to  remove books");
+		System.out.println(REMOVE_MEMBERS + " to remove members");
+		System.out.println(REMOVE_BOOKS + " to remove books");
 		System.out.println(PLACE_HOLD + " to  place a hold on a book");
 		System.out.println(REMOVE_HOLD + " to  remove a hold on a book");
 		System.out.println(PROCESS_HOLD + " to  process holds");
@@ -381,6 +383,10 @@ public class UserInterface {
 		} while (true);
 	}
 
+	public void removeMembers() {
+		System.out.println("I don't do anything yet");
+	}
+
 	/**
 	 * Method to be called for placing a hold. Prompts the user for the
 	 * appropriate values and uses the appropriate Library method for placing a
@@ -545,6 +551,9 @@ public class UserInterface {
 				break;
 			case RETURN_BOOKS:
 				returnLoanableItems();
+				break;
+			case REMOVE_MEMBERS:
+				removeMembers();
 				break;
 			case REMOVE_BOOKS:
 				removeLoanableItems();
