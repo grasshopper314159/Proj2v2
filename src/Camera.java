@@ -58,6 +58,7 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	@Override
 	public boolean issue(Member member) {
 		if (super.issue(member)) {
+			// dueDate.add(Calendar.HOUR, 3);
 			dueDate.add(Calendar.HOUR, 3);
 			return true;
 		}
@@ -79,7 +80,8 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " Camera " + super.getTitle() + " " + super.getId() + " borrowed by " + borrowedBy;
+		return super.toString() + " Camera brand " + super.getTitle() + " " + super.getId() + " borrowed by "
+				+ borrowedBy;
 	}
 
 	/**

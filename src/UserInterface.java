@@ -334,29 +334,29 @@ public class UserInterface {
 	public void returnLoanableItems() {
 		int result;
 		do {
-			String bookID = getToken("Enter book id");
+			String bookID = getToken("Enter item id");
 			// Add overdue check here
 			result = library.returnLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
-				System.out.println("No such Book in Library");
+				System.out.println("No such Item in Library");
 				break;
 			case Library.ITEM_NOT_ISSUED:
-				System.out.println(" Book  was not checked out");
+				System.out.println("Item was not checked out");
 				break;
 			case Library.ITEM_HAS_HOLD:
 				System.out.println("Book has a hold");
 				break;
 			case Library.OPERATION_FAILED:
-				System.out.println("Book could not be returned");
+				System.out.println("Item could not be returned");
 				break;
 			case Library.OPERATION_COMPLETED:
-				System.out.println(" Book has been returned");
+				System.out.println("Item has been returned");
 				break;
 			default:
 				System.out.println("An error has occurred");
 			}
-			if (!yesOrNo("Return more books?")) {
+			if (!yesOrNo("Return more items?")) {
 				break;
 			}
 		} while (true);
@@ -545,7 +545,7 @@ public class UserInterface {
 	}
 
 	public void printOverdue() {
-		library.processLoanableItems(PrintFormat.instance());
+		library.processLoanableItems(PrintOverdue.instance());
 	}
 
 	/**

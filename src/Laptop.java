@@ -69,7 +69,8 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " Laptop " + super.getTitle() + " " + super.getId() + " borrowed by " + borrowedBy;
+		return super.toString() + " Laptop brand " + super.getTitle() + " " + super.getId() + " borrowed by "
+				+ borrowedBy;
 	}
 
 	/**

@@ -1,8 +1,5 @@
 package src;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 /**
  * 
 
@@ -56,7 +53,9 @@ public class PrintOverdue implements LoanableItemVisitor {
 	 */
 	@Override
 	public void visit(LoanableItem item) {
-		System.out.println("Print " + item + " formatted");
+
+		if ((item.borrowedBy != null && item.isOverDue()))
+			System.out.println("Print " + item + " formatted");
 	}
 
 	/**
@@ -65,11 +64,9 @@ public class PrintOverdue implements LoanableItemVisitor {
 	 */
 	@Override
 	public void visit(Book book) {
-		System.out.println("Print " + book + " formatted");
-		Calendar now = new GregorianCalendar();
-		if (now.compareTo(book.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
+
+		if ((book.borrowedBy != null && book.isOverDue()))
+			System.out.println("Print " + book + " formatted");
 	}
 
 	/**
@@ -78,43 +75,33 @@ public class PrintOverdue implements LoanableItemVisitor {
 	 */
 	@Override
 	public void visit(Periodical periodical) {
-		Calendar now = new GregorianCalendar();
-		System.out.println("Print " + periodical + " formatted");
-		if (now.compareTo(periodical.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
+		// Calendar now = new GregorianCalendar();
+		if ((periodical.borrowedBy != null && periodical.isOverDue()))
+			System.out.println("Print " + periodical + " formatted");
 	}
 
 	@Override
 	public void visit(DVD dvd) {
 		// TODO Auto-generated method stub
-		Calendar now = new GregorianCalendar();
-		System.out.println("Print " + dvd + " formatted");
-		if (now.compareTo(dvd.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
 
+		if ((dvd.borrowedBy != null && dvd.isOverDue()))
+			System.out.println("Print " + dvd + " formatted");
 	}
 
 	@Override
 	public void visit(Laptop laptop) {
 		// TODO Auto-generated method stub
-		Calendar now = new GregorianCalendar();
-		System.out.println("Print " + laptop + " formatted");
-		if (now.compareTo(laptop.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
+
+		if ((laptop.borrowedBy != null && laptop.isOverDue()))
+			System.out.println("Print " + laptop + " formatted");
 	}
 
 	@Override
 	public void visit(Camera camera) {
 		// TODO Auto-generated method stub
-		Calendar now = new GregorianCalendar();
-		System.out.println("Print " + camera + " formatted");
-		if (now.compareTo(camera.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
 
+		if ((camera.borrowedBy != null && camera.isOverDue()))
+			System.out.println("Print " + camera + " formatted");
 	}
 
 }

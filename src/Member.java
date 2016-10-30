@@ -73,7 +73,7 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public boolean issue(LoanableItem loanableItem) {
 		if (itemsBorrowed.add(loanableItem)) {
-			transactions.add(new Transaction("Book issued ", loanableItem.getTitle()));
+			transactions.add(new Transaction("Item issued ", loanableItem.getTitle()));
 			return true;
 		}
 		return false;

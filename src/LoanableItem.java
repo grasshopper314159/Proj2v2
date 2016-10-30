@@ -114,6 +114,20 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		return dueDate;
 	}
 
+	public boolean isOverDue() {
+
+		Calendar now = new GregorianCalendar();
+		// System.out.println(now);
+		// System.out.println(dueDate);
+		// System.out.println("Overdue test");
+		if (dueDate != null) {
+			if (now.compareTo(dueDate) > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Returns true if and only if the supplied id is the same as the id of the
 	 * item.
@@ -221,8 +235,8 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 
 	@Override
 	public String toString() {
-		return "LoanableItem [title=" + title + ", id=" + id + ", borrowedBy=" + borrowedBy + ", dueDate=" + dueDate
-				+ "]";
+		return "LoanableItem [type= " + this.getClass().getSimpleName() + " title= " + title + ", id=" + id
+				+ ", borrowedBy=" + borrowedBy + ", dueDate=" + dueDate + "]";
 	}
 
 	/**
