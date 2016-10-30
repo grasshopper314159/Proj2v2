@@ -59,7 +59,7 @@ public class Member implements Serializable, Matchable<String> {
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.fineBalance=0;
+		this.fineBalance = 0;
 		id = MEMBER_STRING + (MemberIdServer.instance()).getId();
 	}
 
@@ -289,15 +289,31 @@ public class Member implements Serializable, Matchable<String> {
 	/**
 	 * @return the balance
 	 */
+	public void calcBalance() {
+		// check if item is overdue
+		// look at loanable items issued
+		// checkOverdue(loanableitem)
+		// for (ListIterator<LoanableItem> iterator =
+		// itemsBorrowed.listIterator(); iterator.hasNext();) {
+		// LoanableItem aLoanableItem = iterator.next();
+		// String id = aLoanableItem.getId();
+		// if (id.equals(loanableItem.getId())) {
+		// transactions.add(new Transaction("Item renewed ",
+		// loanableItem.getTitle()));
+		// return true;
+		// }
+		// }
+	}
+
 	public double getBalance() {
 		return fineBalance;
 	}
 
 	/**
-	 * @param balance
-	 *            the balance to set
+	 * @param payment
+	 *            reduces fineBalace by amount paid
 	 */
-	public void setBalance(double balance) {
-		this.fineBalance = balance;
+	public void payBalance(double payment) {
+		this.fineBalance = (this.fineBalance - payment);
 	}
 }

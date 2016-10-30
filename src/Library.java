@@ -280,6 +280,15 @@ public class Library implements Serializable {
 		}
 	}
 
+	public double getMemberBalance(String memberId) {
+		Member member = memberList.search(memberId);
+		if (member == null) {
+			return -1;
+		} else {
+			return (member.getBalance());
+		}
+	}
+
 	/**
 	 * Removes a specific book from the catalog
 	 * 
