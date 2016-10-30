@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
  
@@ -88,10 +89,8 @@ public class Library implements Serializable {
 	 *            item id
 	 * @return the Book object created
 	 */
-	public LoanableItem addLoanableItem(int type, String title, String author,
-			String id) {
-		LoanableItem item = LoanableItemFactory.instance().createLoanableItem(
-				type, title, author, id);
+	public LoanableItem addLoanableItem(int type, String title, String author, String id) {
+		LoanableItem item = LoanableItemFactory.instance().createLoanableItem(type, title, author, id);
 		if (catalog.insertLoanableItem(item)) {
 			return (item);
 		}
@@ -196,18 +195,15 @@ public class Library implements Serializable {
 		if (item == null) {
 			return (ITEM_NOT_FOUND);
 		}
-		return member.removeHold(itemId) && item.removeHold(memberId) ? OPERATION_COMPLETED
-				: NO_HOLD_FOUND;
+		return member.removeHold(itemId) && item.removeHold(memberId) ? OPERATION_COMPLETED : NO_HOLD_FOUND;
 	}
 
 	/**
 	 * Removes all out-of-date holds
 	 */
 	private void removeInvalidHolds() {
-		for (Iterator<LoanableItem> catalogIterator = catalog.iterator(); catalogIterator
-				.hasNext();) {
-			for (Iterator<Hold> iterator = catalogIterator.next().getHolds(); iterator
-					.hasNext();) {
+		for (Iterator<LoanableItem> catalogIterator = catalog.iterator(); catalogIterator.hasNext();) {
+			for (Iterator<Hold> iterator = catalogIterator.next().getHolds(); iterator.hasNext();) {
 				Hold hold = iterator.next();
 				if (!hold.isValid()) {
 					hold.getLoanableItem().removeHold(hold.getMember().getId());
@@ -308,6 +304,11 @@ public class Library implements Serializable {
 		return (OPERATION_FAILED);
 	}
 
+	public int removeMember(String memberID) {
+		System.out.println("I don't do anything yet");
+		return OPERATION_COMPLETED;
+	}
+
 	/**
 	 * Returns a single loanable item to the library
 	 * 
@@ -352,8 +353,7 @@ public class Library implements Serializable {
 	}
 
 	public void processLoanableItems(LoanableItemVisitor visitor) {
-		for (Iterator<LoanableItem> itemIterator = catalog.iterator(); itemIterator
-				.hasNext();) {
+		for (Iterator<LoanableItem> itemIterator = catalog.iterator(); itemIterator.hasNext();) {
 			itemIterator.next().accept(visitor);
 		}
 	}
@@ -405,8 +405,7 @@ public class Library implements Serializable {
 	 * @param output
 	 *            the stream to be written to
 	 */
-	private void writeObject(java.io.ObjectOutputStream output)
-			throws IOException {
+	private void writeObject(java.io.ObjectOutputStream output) throws IOException {
 		output.defaultWriteObject();
 		output.writeObject(library);
 	}
@@ -417,8 +416,7 @@ public class Library implements Serializable {
 	 * @param input
 	 *            the stream to be read
 	 */
-	private void readObject(java.io.ObjectInputStream input)
-			throws IOException, ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
 		input.defaultReadObject();
 		if (library == null) {
 			library = (Library) input.readObject();

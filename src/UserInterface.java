@@ -321,6 +321,7 @@ public class UserInterface {
 		int result;
 		do {
 			String bookID = getToken("Enter book id");
+			// Add overdue check here
 			result = library.returnLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -384,7 +385,10 @@ public class UserInterface {
 	}
 
 	public void removeMembers() {
-		System.out.println("I don't do anything yet");
+		int result;
+		String memberID = getToken("Enter memberID");
+		result = library.removeMember(memberID);
+
 	}
 
 	/**

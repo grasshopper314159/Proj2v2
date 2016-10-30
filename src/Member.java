@@ -39,7 +39,7 @@ public class Member implements Serializable, Matchable<String> {
 	private String address;
 	private String phone;
 	private String id;
-	private double balance = 0;
+	private double fineBalance;
 	private static final String MEMBER_STRING = "M";
 	private List<LoanableItem> itemsBorrowed = new LinkedList<LoanableItem>();
 	private List<Hold> itemsOnHold = new LinkedList<Hold>();
@@ -59,6 +59,7 @@ public class Member implements Serializable, Matchable<String> {
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
+		this.fineBalance=0;
 		id = MEMBER_STRING + (MemberIdServer.instance()).getId();
 	}
 
@@ -289,13 +290,14 @@ public class Member implements Serializable, Matchable<String> {
 	 * @return the balance
 	 */
 	public double getBalance() {
-		return balance;
+		return fineBalance;
 	}
 
 	/**
-	 * @param balance the balance to set
+	 * @param balance
+	 *            the balance to set
 	 */
 	public void setBalance(double balance) {
-		this.balance = balance;
+		this.fineBalance = balance;
 	}
 }
