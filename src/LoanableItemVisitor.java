@@ -26,6 +26,10 @@ package src;
  * @author Brahma Dathan
  *
  */
+/**
+ * @author Nick
+ *
+ */
 public interface LoanableItemVisitor {
 	/**
 	 * This is the method for catching all LoanableItem objects that may be
@@ -52,9 +56,24 @@ public interface LoanableItemVisitor {
 	 */
 	public void visit(Periodical periodical);
 
+	/**
+	 * The method processes DVD objects
+	 * 
+	 * @param dvd
+	 */
 	public void visit(DVD dvd);
 
+	/**
+	 * * The method processes laptop objects
+	 * 
+	 * @param laptop
+	 */
 	public void visit(Laptop laptop);
 
+	/**
+	 * The method processes camera objects
+	 * 
+	 * @param camera
+	 */
 	public void visit(Camera camera);
 }

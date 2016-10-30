@@ -88,18 +88,32 @@ public class PrintOverdue implements LoanableItemVisitor {
 	@Override
 	public void visit(DVD dvd) {
 		// TODO Auto-generated method stub
+		Calendar now = new GregorianCalendar();
+		System.out.println("Print " + dvd + " formatted");
+		if (now.compareTo(dvd.getDueDate()) < 0) {
+			System.out.println("This book is overdue");
+		}
 
 	}
 
 	@Override
 	public void visit(Laptop laptop) {
 		// TODO Auto-generated method stub
-
+		Calendar now = new GregorianCalendar();
+		System.out.println("Print " + laptop + " formatted");
+		if (now.compareTo(laptop.getDueDate()) < 0) {
+			System.out.println("This book is overdue");
+		}
 	}
 
 	@Override
 	public void visit(Camera camera) {
 		// TODO Auto-generated method stub
+		Calendar now = new GregorianCalendar();
+		System.out.println("Print " + camera + " formatted");
+		if (now.compareTo(camera.getDueDate()) < 0) {
+			System.out.println("This book is overdue");
+		}
 
 	}
 

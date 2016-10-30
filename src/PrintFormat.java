@@ -1,8 +1,5 @@
 package src;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 /**
  * 
 
@@ -66,10 +63,7 @@ public class PrintFormat implements LoanableItemVisitor {
 	@Override
 	public void visit(Book book) {
 		System.out.println("Print " + book + " formatted");
-		Calendar now = new GregorianCalendar();
-		if (now.compareTo(book.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
+
 	}
 
 	/**
@@ -78,11 +72,9 @@ public class PrintFormat implements LoanableItemVisitor {
 	 */
 	@Override
 	public void visit(Periodical periodical) {
-		Calendar now = new GregorianCalendar();
+
 		System.out.println("Print " + periodical + " formatted");
-		if (now.compareTo(periodical.getDueDate()) < 0) {
-			System.out.println("This book is overdue");
-		}
+
 	}
 
 	@Override
