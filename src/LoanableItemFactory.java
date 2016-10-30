@@ -62,13 +62,18 @@ public class LoanableItemFactory {
 	 *            the id of the item
 	 * @return the item that was created
 	 */
-	public LoanableItem createLoanableItem(int type, String title,
-			String author, String id) {
+	public LoanableItem createLoanableItem(int type, String title, String author, String id) {
 		switch (type) {
 		case Library.BOOK:
 			return new Book(title, author, id);
 		case Library.PERIODICAL:
 			return new Periodical(title, id);
+		case Library.CAMERA:
+			return new Camera(title, id);
+		case Library.LAPTOP:
+			return new Laptop(title, id);
+		case Library.DVD:
+			return new DVD(title, id);
 		default:
 			return null;
 		}

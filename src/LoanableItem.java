@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
 
@@ -54,6 +55,11 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	public LoanableItem(String title, String id) {
 		this.id = id;
 		this.title = title;
+	}
+
+	public LoanableItem(String id) {
+		this.id = id;
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -135,8 +141,7 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	 * @return true iff the hold could be removed
 	 */
 	public boolean removeHold(String memberId) {
-		for (ListIterator<Hold> iterator = holds.listIterator(); iterator
-				.hasNext();) {
+		for (ListIterator<Hold> iterator = holds.listIterator(); iterator.hasNext();) {
 			Hold hold = iterator.next();
 			String id = hold.getMember().getId();
 			if (id.equals(memberId)) {
@@ -153,8 +158,7 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	 * @return the next valid hold
 	 */
 	public Hold getNextHold() {
-		for (ListIterator<Hold> iterator = holds.listIterator(); iterator
-				.hasNext();) {
+		for (ListIterator<Hold> iterator = holds.listIterator(); iterator.hasNext();) {
 			Hold hold = iterator.next();
 			iterator.remove();
 			if (hold.isValid()) {
@@ -217,8 +221,8 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 
 	@Override
 	public String toString() {
-		return "LoanableItem [title=" + title + ", id=" + id + ", borrowedBy="
-				+ borrowedBy + ", dueDate=" + dueDate + "]";
+		return "LoanableItem [title=" + title + ", id=" + id + ", borrowedBy=" + borrowedBy + ", dueDate=" + dueDate
+				+ "]";
 	}
 
 	/**

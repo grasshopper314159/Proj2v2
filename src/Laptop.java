@@ -31,7 +31,6 @@ import java.util.Calendar;
  */
 public class Laptop extends LoanableItem implements Serializable, Matchable<String> {
 	private static final long serialVersionUID = 1L;
-	private String author;
 
 	/**
 	 * Creates a Laptop with the given id, title, and author name
@@ -43,9 +42,9 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 	 * @param id
 	 *            Laptop id
 	 */
-	public Laptop(String title, String author, String id) {
-		super(title, id);
-		this.author = author;
+	public Laptop(String brand, String id) {
+		super(brand, id);
+
 	}
 
 	/**
@@ -65,21 +64,12 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 	}
 
 	/**
-	 * Getter for author
-	 * 
-	 * @return author name
-	 */
-	public String getAuthor() {
-		return author;
-	}
-
-	/**
 	 * String form of the Laptop
 	 * 
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
+		return super.toString() + " Laptop " + super.getTitle() + " " + super.getId() + " borrowed by " + borrowedBy;
 	}
 
 	/**

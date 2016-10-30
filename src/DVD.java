@@ -31,7 +31,6 @@ import java.util.Calendar;
  */
 public class DVD extends LoanableItem implements Serializable, Matchable<String> {
 	private static final long serialVersionUID = 1L;
-	private String author;
 
 	/**
 	 * Creates a DVD with the given id, title, and author name
@@ -43,9 +42,9 @@ public class DVD extends LoanableItem implements Serializable, Matchable<String>
 	 * @param id
 	 *            DVD id
 	 */
-	public DVD(String title, String author, String id) {
+	public DVD(String title, String id) {
 		super(title, id);
-		this.author = author;
+
 	}
 
 	/**
@@ -65,21 +64,12 @@ public class DVD extends LoanableItem implements Serializable, Matchable<String>
 	}
 
 	/**
-	 * Getter for author
-	 * 
-	 * @return author name
-	 */
-	public String getAuthor() {
-		return author;
-	}
-
-	/**
 	 * String form of the DVD
 	 * 
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
+		return super.toString() + " Title " + getTitle() + " borrowed by " + borrowedBy;
 	}
 
 	/**

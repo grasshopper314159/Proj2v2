@@ -49,6 +49,9 @@ public class Library implements Serializable {
 
 	public static final int BOOK = 1;
 	public static final int PERIODICAL = 2;
+	public static final int LAPTOP = 3;
+	public static final int CAMERA = 4;
+	public static final int DVD = 5;
 	private Catalog catalog;
 	private MemberList memberList;
 	private static Library library;

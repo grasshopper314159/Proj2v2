@@ -31,7 +31,7 @@ import java.util.Calendar;
  */
 public class Camera extends LoanableItem implements Serializable, Matchable<String> {
 	private static final long serialVersionUID = 1L;
-	private String author;
+	// private String title;
 
 	/**
 	 * Creates a Camera with the given id, title, and author name
@@ -43,9 +43,9 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	 * @param id
 	 *            Camera id
 	 */
-	public Camera(String title, String author, String id) {
-		super(title, id);
-		this.author = author;
+	public Camera(String brand, String id) {
+		super(brand, id);
+		// this.title = brand;
 	}
 
 	/**
@@ -69,9 +69,9 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	 * 
 	 * @return author name
 	 */
-	public String getAuthor() {
-		return author;
-	}
+	// public String getBrand() {
+	// return brand;
+	// }
 
 	/**
 	 * String form of the Camera
@@ -79,7 +79,7 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
+		return super.toString() + " Camera " + super.getTitle() + " " + super.getId() + " borrowed by " + borrowedBy;
 	}
 
 	/**

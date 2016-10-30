@@ -43,9 +43,9 @@ public class UserInterface {
 	private static Library library;
 	private static final int EXIT = 0;
 	private static final int ADD_MEMBER = 1;
-	private static final int ADD_BOOKS = 2;
-	private static final int ISSUE_BOOKS = 3;
-	private static final int RETURN_BOOKS = 4;
+	private static final int ADD_ITEMS = 2;
+	private static final int ISSUE_ITEMS = 3;
+	private static final int RETURN_ITEMS = 4;
 	private static final int RENEW_BOOKS = 5;
 	private static final int REMOVE_MEMBERS = 6;
 	private static final int REMOVE_BOOKS = 7;
@@ -188,22 +188,22 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out.println("Enter a number between 0 and 12 as explained below:");
+		System.out.println("Enter a number between 0 and 16 as explained below:");
 		System.out.println(EXIT + " to Exit\n");
 		System.out.println(ADD_MEMBER + " to add a member");
-		System.out.println(ADD_BOOKS + " to  add books");
-		System.out.println(ISSUE_BOOKS + " to  issue books to a  member");
-		System.out.println(RETURN_BOOKS + " to  return books ");
-		System.out.println(RENEW_BOOKS + " to  renew books ");
+		System.out.println(ADD_ITEMS + " to add items");
+		System.out.println(ISSUE_ITEMS + " to issue items to a member");
+		System.out.println(RETURN_ITEMS + " to return items");
+		System.out.println(RENEW_BOOKS + " to renew books ");
 		System.out.println(REMOVE_MEMBERS + " to remove members");
 		System.out.println(REMOVE_BOOKS + " to remove books");
-		System.out.println(PLACE_HOLD + " to  place a hold on a book");
-		System.out.println(REMOVE_HOLD + " to  remove a hold on a book");
-		System.out.println(PROCESS_HOLD + " to  process holds");
-		System.out.println(GET_TRANSACTIONS + " to  print transactions");
-		System.out.println(SAVE + " to  save data");
-		System.out.println(RETRIEVE + " to  retrieve");
-		System.out.println(PRINT_FORMATTED + " to  print items formatted");
+		System.out.println(PLACE_HOLD + " to place a hold on a book");
+		System.out.println(REMOVE_HOLD + " to remove a hold on a book");
+		System.out.println(PROCESS_HOLD + " to process holds");
+		System.out.println(GET_TRANSACTIONS + " to print transactions");
+		System.out.println(SAVE + " to save data");
+		System.out.println(RETRIEVE + " to retrieve");
+		System.out.println(PRINT_FORMATTED + " to print items formatted");
 		System.out.println(PRINT_OVERDUE + " to print items that are overdue");
 		System.out.println(HELP + " for help");
 	}
@@ -237,21 +237,35 @@ public class UserInterface {
 		do {
 			int type;
 			do {
-				type = getNumber("Enter " + Library.BOOK + " for book or " + Library.PERIODICAL + " for periodical");
-			} while (type != Library.BOOK && type != Library.PERIODICAL);
-			String title = getToken("Enter title");
+				type = getNumber("Enter\n" + Library.BOOK + " for book\n" + Library.PERIODICAL + " for periodical\n"
+						+ Library.LAPTOP + " for laptop\n" + Library.CAMERA + " for camera\n" + Library.DVD
+						+ " for DVD\n");
+			} while (type != Library.BOOK && type != Library.PERIODICAL && type != Library.CAMERA
+					&& type != Library.LAPTOP && type != Library.DVD);
+			String title = "";
 			String author = "";
+
 			if (type == Library.BOOK) {
+				title = getToken("Enter title");
 				author = getToken("Enter author");
+			} else if (type == Library.PERIODICAL) {
+				title = getToken("Enter title");
+			} else if (type == Library.DVD) {
+				title = getToken("Enter title");
+			} else if (type == Library.CAMERA) {
+				title = getToken("Enter brand");
+			} else if (type == Library.LAPTOP) {
+				title = getToken("Enter brand");
 			}
 			String id = getToken("Enter id");
+
 			result = library.addLoanableItem(type, title, author, id);
 			if (result != null) {
 				System.out.println(result);
 			} else {
-				System.out.println("Book could not be added");
+				System.out.println("Item could not be added");
 			}
-			if (!yesOrNo("Add more books?")) {
+			if (!yesOrNo("Add more items?")) {
 				break;
 			}
 		} while (true);
@@ -547,13 +561,13 @@ public class UserInterface {
 			case ADD_MEMBER:
 				addMember();
 				break;
-			case ADD_BOOKS:
+			case ADD_ITEMS:
 				addLoanableItems();
 				break;
-			case ISSUE_BOOKS:
+			case ISSUE_ITEMS:
 				issueLoanableItems();
 				break;
-			case RETURN_BOOKS:
+			case RETURN_ITEMS:
 				returnLoanableItems();
 				break;
 			case REMOVE_MEMBERS:
