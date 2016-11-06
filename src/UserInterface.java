@@ -57,7 +57,8 @@ public class UserInterface {
 	private static final int RETRIEVE = 13;
 	private static final int PRINT_FORMATTED = 14;
 	private static final int PRINT_OVERDUE = 15;
-	private static final int HELP = 16;
+	private static final int PAY_BALANCE = 16;
+	private static final int HELP = 17;
 
 	/**
 	 * Made private for singleton pattern. Conditionally looks for any saved
@@ -205,6 +206,7 @@ public class UserInterface {
 		System.out.println(RETRIEVE + " to retrieve");
 		System.out.println(PRINT_FORMATTED + " to print items formatted");
 		System.out.println(PRINT_OVERDUE + " to print items that are overdue");
+		System.out.println(PAY_BALANCE + " to pay member's balance");
 		System.out.println(HELP + " for help");
 	}
 
@@ -548,6 +550,23 @@ public class UserInterface {
 		library.processLoanableItems(PrintOverdue.instance());
 	}
 
+	public void payBalance() {
+		Member result;
+		String memberID = getToken("Enter member id");
+		result = library.validateMember(memberID);
+		double owe = result.calculateBalance();
+		System.out.println("Current balance: " + owe);
+
+		do {
+			if (result != null && owe != 0.0) {
+				String pay = getToken("Please enter payment amount: ");
+
+			} else {
+
+			}
+		} while (true);
+	}
+
 	/**
 	 * Orchestrates the whole process. Calls the appropriate method for the
 	 * different functionalties.
@@ -602,6 +621,9 @@ public class UserInterface {
 				break;
 			case PRINT_OVERDUE:
 				printOverdue();
+				break;
+			case PAY_BALANCE:
+				payBalance();
 				break;
 			case HELP:
 				help();

@@ -208,6 +208,15 @@ public class Member implements Serializable, Matchable<String> {
 	}
 
 	/**
+	 * Getter for fineBalance
+	 * 
+	 * @return fineBalance
+	 */
+	public double getFineBalance() {
+		return fineBalance;
+	}
+
+	/**
 	 * Setter for name
 	 * 
 	 * @param newName
@@ -235,6 +244,16 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public void setPhone(String newPhone) {
 		phone = newPhone;
+	}
+
+	/**
+	 * Setter for fineBalance
+	 * 
+	 * @param newName
+	 *            member's new fineBalance
+	 */
+	public void setFineBalance(double fineBalance) {
+		this.fineBalance = fineBalance;
 	}
 
 	/**
@@ -303,6 +322,14 @@ public class Member implements Serializable, Matchable<String> {
 		// return true;
 		// }
 		// }
+	}
+
+	/**
+	 * @return the balance
+	 */
+	public double calculateBalance() {
+		double balance = 0.0;
+		return balance;
 	}
 
 	public double getBalance() {

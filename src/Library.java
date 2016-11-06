@@ -438,6 +438,22 @@ public class Library implements Serializable {
 	}
 
 	/**
+	 * Gets the Balance of member
+	 * 
+	 * @param itemId
+	 *            id of the item
+	 * @return the member who should be notified
+	 */
+	public Member validateMember(String memberID) {
+		Member member = memberList.search(memberID);
+		if (member == null) {
+			return null;
+		} else {
+			return member;
+		}
+	}
+
+	/**
 	 * String form of the library
 	 * 
 	 */
