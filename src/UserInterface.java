@@ -598,7 +598,7 @@ public class UserInterface {
 		System.out.println("Current balance: " + owe);
 
 		do {
-			if (result != null && owe != 0.0) {
+			if (owe != 0.0) {
 				String pay = getToken("Please enter payment amount: ");
 				double payDouble = Double.parseDouble(pay);
 				double remain = result.payBalance(payDouble);
