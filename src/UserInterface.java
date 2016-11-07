@@ -560,9 +560,11 @@ public class UserInterface {
 		do {
 			if (result != null && owe != 0.0) {
 				String pay = getToken("Please enter payment amount: ");
-
+				double payDouble = result.calculateBalance();
+				double remain = result.payBalance(payDouble);
+				System.out.println("Remaining balance: " + remain);
 			} else {
-
+				System.out.println("No balance to pay.");
 			}
 		} while (true);
 	}
