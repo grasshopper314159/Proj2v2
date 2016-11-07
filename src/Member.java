@@ -331,6 +331,17 @@ public class Member implements Serializable, Matchable<String> {
 		double balance = 0.0;
 		return balance;
 	}
+	
+	public double computeFineBalance() {
+		double balance = 0.0;
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
+			LoanableItem item = iterator.next();
+			if (item.isOverDue()) {
+			//	balance += item.computeFine();
+			}
+		}
+		return balance + fineBalance;
+	}
 
 	public double getBalance() {
 		return fineBalance;
@@ -342,5 +353,18 @@ public class Member implements Serializable, Matchable<String> {
 	 */
 	public void payBalance(double payment) {
 		this.fineBalance = (this.fineBalance - payment);
+	}
+	
+	public boolean hasReservedItemCheckedOut() {
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
+			LoanableItem item = iterator.next();
+			if (item instanceof Book) {
+				Book b = (Book) item;
+				if (b.isReserved()) {
+					return true;
+				}			
+			}
+		}
+		return false;
 	}
 }
