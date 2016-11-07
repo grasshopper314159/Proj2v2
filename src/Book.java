@@ -104,17 +104,17 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
 	}
 
-	public double computeFineItem(LoanableItem item) {
+	public double computeFineItem() {
 		double fineTotal = 0.0;
 		int totalHrs = 0;
 		int fee = 0;
-		if (item.isOverDue() && (item instanceof Book)) {
-			Book bk = (Book) item;
-			if (bk.isReserved()) {
-				totalHrs += ((Calendar.getInstance().getTimeInMillis() - bk.getDueDate().getTimeInMillis()) / 3600000);
+		if (this.isOverDue() && (this instanceof Book)) {
+			if (this.isReserved()) {
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - this.getDueDate().getTimeInMillis())
+						/ 3600000);
 				fineTotal += 1.0 * totalHrs;
 			} else {
-				totalHrs += ((Calendar.getInstance().getTimeInMillis() - item.getDueDate().getTimeInMillis())
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - this.getDueDate().getTimeInMillis())
 						/ 3600000);
 				fee = totalHrs / 24;
 				if (fee > 24) {

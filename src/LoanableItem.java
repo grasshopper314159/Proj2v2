@@ -42,6 +42,7 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	private String id;
 	protected Member borrowedBy;
 	protected Calendar dueDate;
+	private boolean isReserved = false;
 	private List<Hold> holds = new LinkedList<Hold>();
 
 	/**
@@ -60,6 +61,10 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	public LoanableItem(String id) {
 		this.id = id;
 		// TODO Auto-generated constructor stub
+	}
+
+	public boolean isReserved() {
+		return isReserved;
 	}
 
 	/**

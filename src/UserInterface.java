@@ -299,12 +299,11 @@ public class UserInterface {
 			System.out.println("Currently your balance is " + currentBalance);
 			if (yesOrNo("Would you like to make a payment now to reduce your balance?")) {
 				payBalance();
-			}
-			else {
+			} else {
 				return;
 			}
 		}
-		
+
 		do {
 			String bookID = getToken("Enter item id");
 			result = library.issueLoanableItem(memberID, bookID);
@@ -600,8 +599,10 @@ public class UserInterface {
 				double payDouble = result.calculateBalance();
 				double remain = result.payBalance(payDouble);
 				System.out.println("Remaining balance: " + remain);
+				break;
 			} else {
 				System.out.println("No balance to pay.");
+				break;
 			}
 		} while (true);
 	}
