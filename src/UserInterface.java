@@ -348,7 +348,7 @@ public class UserInterface {
 			if (yesOrNo(book.getTitle())) {
 				result = library.renewItem(book.getId(), memberID);
 				if (result != null) {
-					System.out.println(result.getTitle() + "   " + result.getDueDate());
+					System.out.println(result.getTitle() + "   due date: " + result.getDueDate());
 				} else {
 					System.out.println("Item is not renewable");
 				}
@@ -590,13 +590,17 @@ public class UserInterface {
 		Member result;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
+		if (result == null) {
+			System.out.println("Invalid member id");
+			payBalance();
+		}
 		double owe = result.calculateBalance();
 		System.out.println("Current balance: " + owe);
 
 		do {
 			if (result != null && owe != 0.0) {
 				String pay = getToken("Please enter payment amount: ");
-				double payDouble = result.calculateBalance();
+				double payDouble = Double.parseDouble(pay);
 				double remain = result.payBalance(payDouble);
 				System.out.println("Remaining balance: " + remain);
 				break;
