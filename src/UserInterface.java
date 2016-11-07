@@ -45,20 +45,22 @@ public class UserInterface {
 	private static final int ADD_MEMBER = 1;
 	private static final int ADD_ITEMS = 2;
 	private static final int ISSUE_ITEMS = 3;
-	private static final int RETURN_ITEMS = 4;
-	private static final int RENEW_BOOKS = 5;
-	private static final int REMOVE_MEMBERS = 6;
-	private static final int REMOVE_BOOKS = 7;
-	private static final int PLACE_HOLD = 8;
-	private static final int REMOVE_HOLD = 9;
-	private static final int PROCESS_HOLD = 10;
-	private static final int GET_TRANSACTIONS = 11;
-	private static final int SAVE = 12;
-	private static final int RETRIEVE = 13;
-	private static final int PRINT_FORMATTED = 14;
-	private static final int PRINT_OVERDUE = 15;
-	private static final int PAY_BALANCE = 16;
-	private static final int HELP = 17;
+	private static final int TOGGLE_BOOK_RESERVED = 4;
+	private static final int RETURN_ITEMS = 5;
+	private static final int RENEW_BOOKS = 6;
+	private static final int CHANGE_DUE_DATE = 7;
+	private static final int REMOVE_MEMBERS = 8;
+	private static final int REMOVE_BOOKS = 9;
+	private static final int PLACE_HOLD = 10;
+	private static final int REMOVE_HOLD = 11;
+	private static final int PROCESS_HOLD = 12;
+	private static final int GET_TRANSACTIONS = 13;
+	private static final int SAVE = 14;
+	private static final int RETRIEVE = 15;
+	private static final int PRINT_FORMATTED = 16;
+	private static final int PRINT_OVERDUE = 17;
+	private static final int PAY_BALANCE = 18;
+	private static final int HELP = 19;
 
 	/**
 	 * Made private for singleton pattern. Conditionally looks for any saved
@@ -194,8 +196,10 @@ public class UserInterface {
 		System.out.println(ADD_MEMBER + " to add a member");
 		System.out.println(ADD_ITEMS + " to add items");
 		System.out.println(ISSUE_ITEMS + " to issue items to a member");
+		System.out.println(TOGGLE_BOOK_RESERVED + " to change a book's reserved status");
 		System.out.println(RETURN_ITEMS + " to return items");
 		System.out.println(RENEW_BOOKS + " to renew books ");
+		System.out.println(CHANGE_DUE_DATE + " to change the due date of an item");
 		System.out.println(REMOVE_MEMBERS + " to remove members");
 		System.out.println(REMOVE_BOOKS + " to remove books");
 		System.out.println(PLACE_HOLD + " to place a hold on a book");
@@ -300,6 +304,17 @@ public class UserInterface {
 		} while (true);
 	}
 
+	public void changeReservedStatus() {
+		int result;
+		String bookID = getToken("Enter book id");
+		result = library.changeReservedStatus(bookID);
+		if (result == 7) {
+			System.out.println("Reserved is set");
+		} else {
+			System.out.println("Status not changed");
+		}
+	}
+
 	/**
 	 * Method to be called for renewing books. Prompts the user for the
 	 * appropriate values and uses the appropriate Library method for renewing
@@ -321,10 +336,17 @@ public class UserInterface {
 				if (result != null) {
 					System.out.println(result.getTitle() + "   " + result.getDueDate());
 				} else {
-					System.out.println("Book is not renewable");
+					System.out.println("Item is not renewable");
 				}
 			}
 		}
+	}
+
+	public void changeDueDate() {
+		String itemID = getToken("Enter item id");
+
+		Calendar date = getDate("Please enter the new due date as mm/dd/yy");
+		library.changeDueDate(itemID, date);
 	}
 
 	/**
@@ -588,6 +610,9 @@ public class UserInterface {
 			case ISSUE_ITEMS:
 				issueLoanableItems();
 				break;
+			case TOGGLE_BOOK_RESERVED:
+				changeReservedStatus();
+				break;
 			case RETURN_ITEMS:
 				returnLoanableItems();
 				break;
@@ -599,6 +624,9 @@ public class UserInterface {
 				break;
 			case RENEW_BOOKS:
 				renewLoanableItems();
+				break;
+			case CHANGE_DUE_DATE:
+				changeDueDate();
 				break;
 			case PLACE_HOLD:
 				placeHold();

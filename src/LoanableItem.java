@@ -114,12 +114,18 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		return dueDate;
 	}
 
+	/**
+	 * @param dueDate
+	 *            the dueDate to set
+	 */
+	public void setDueDate(Calendar dueDate) {
+		this.dueDate = dueDate;
+	}
+
 	public boolean isOverDue() {
 
 		Calendar now = new GregorianCalendar();
-		// System.out.println(now);
-		// System.out.println(dueDate);
-		// System.out.println("Overdue test");
+
 		if (dueDate != null) {
 			if (now.compareTo(dueDate) > 0) {
 				return true;
