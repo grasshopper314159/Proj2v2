@@ -201,6 +201,15 @@ public class Library implements Serializable {
 		return member.removeHold(itemId) && item.removeHold(memberId) ? OPERATION_COMPLETED : NO_HOLD_FOUND;
 	}
 
+	public int setReserved(String itemId) {
+		LoanableItem item = catalog.search(itemId);
+		if (item == null) {
+			return (ITEM_NOT_FOUND);
+		}
+
+		return OPERATION_COMPLETED;
+	}
+
 	/**
 	 * Removes all out-of-date holds
 	 */
@@ -241,6 +250,39 @@ public class Library implements Serializable {
 			return null;
 		}
 		return (item);
+	}
+
+	public int changeReservedStatus(String itemId) {
+		LoanableItem item = catalog.search(itemId);
+
+		if (item == null) {
+			return 0;
+		} else {
+			if (item instanceof Book) {
+				Book book = (Book) item;
+				book.setReserved(true);
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+	public int changeDueDate(String itemId, Calendar dueDate) {
+
+		LoanableItem item = catalog.search(itemId);
+		if (item == null) {
+			System.out.println("Item Not Found");
+			return (ITEM_NOT_FOUND);
+		} else {
+
+			if (item.borrowedBy != null) {
+				item.setDueDate(dueDate);
+				System.out.println("Due Date Changed");
+				return OPERATION_COMPLETED;
+			}
+		}
+		System.out.println("Due Date Not Changed");
+		return 0;
 	}
 
 	/**
