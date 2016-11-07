@@ -359,7 +359,7 @@ public class UserInterface {
 	public void changeDueDate() {
 		String itemID = getToken("Enter item id");
 
-		Calendar date = getDate("Please enter the new due date as mm/dd/yy");
+		Calendar date = getDate("Please enter the new due date as mm/dd/yy hh:mm");
 		library.changeDueDate(itemID, date);
 	}
 
