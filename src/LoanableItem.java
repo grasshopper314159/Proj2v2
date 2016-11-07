@@ -247,19 +247,14 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	}
 
 	public String convertDate(Calendar cal) {
-		DateFormat dateFormat = new SimpleDateFormat("MM/DD/YYYY");
-
-		if (cal.getTime() != null) {
-			return dateFormat.format(cal.getTime());
-		} else {
-			return ("No Due Date");
-		}
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY");
+		return dateFormat.format(cal.getTime());
 	}
 
 	@Override
 	public String toString() {
 		return "LoanableItem [type= " + this.getClass().getSimpleName() + " title= " + title + ", id=" + id
-				+ ", borrowedBy=" + borrowedBy + ", dueDate=" + convertDate(dueDate) + "]";
+				+ ", borrowedBy=" + borrowedBy + ", dueDate=" + dueDate + "]";
 	}
 
 	/**
