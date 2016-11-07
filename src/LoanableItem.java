@@ -80,7 +80,8 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		if (borrowedBy != null) {
 			return false;
 		}
-		dueDate = new GregorianCalendar();
+		dueDate = new GregorianCalendar().getInstance();
+
 		borrowedBy = member;
 		return true;
 	}
