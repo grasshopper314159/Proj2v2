@@ -81,7 +81,6 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 			return false;
 		}
 		dueDate = new GregorianCalendar().getInstance();
-
 		borrowedBy = member;
 		return true;
 	}
@@ -247,9 +246,12 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		}
 	}
 
-	public String convertDate(Calendar cal) {
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY");
-		return dateFormat.format(cal.getTime());
+	public String getConvertedDueDate() {
+		if (dueDate != null) {
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm");
+			return dateFormat.format(dueDate.getTime());
+		}
+		return dueDate.toString();
 	}
 
 	@Override

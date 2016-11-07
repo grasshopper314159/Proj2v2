@@ -308,7 +308,7 @@ public class UserInterface {
 			String bookID = getToken("Enter item id");
 			result = library.issueLoanableItem(memberID, bookID);
 			if (result != null) {
-				System.out.println(result.getTitle() + "   " + result.getDueDate());
+				System.out.println(result.getTitle() + "   " + result.getConvertedDueDate());
 			} else {
 				System.out.println("Item could not be issued");
 			}
