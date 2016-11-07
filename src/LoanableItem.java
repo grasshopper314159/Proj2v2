@@ -21,6 +21,8 @@ package src;
  * and are not responsible for any loss or damage resulting from its use.  
  */
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -67,7 +69,7 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	 * 
 	 * @param member
 	 *            The member to whom the item should be issued
-	 * @return true iff the operations is syuccessful
+	 * @return true iff the operations is successful
 	 */
 	public boolean issue(Member member) {
 		if (borrowedBy != null) {
@@ -239,10 +241,20 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		}
 	}
 
+	public String convertDate(Calendar cal) {
+		DateFormat dateFormat = new SimpleDateFormat("MM/DD/YYYY");
+
+		if (cal.getTime() != null) {
+			return dateFormat.format(cal.getTime());
+		} else {
+			return ("No Due Date");
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "LoanableItem [type= " + this.getClass().getSimpleName() + " title= " + title + ", id=" + id
-				+ ", borrowedBy=" + borrowedBy + ", dueDate=" + dueDate + "]";
+				+ ", borrowedBy=" + borrowedBy + ", dueDate=" + convertDate(dueDate) + "]";
 	}
 
 	/**
