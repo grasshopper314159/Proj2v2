@@ -201,15 +201,6 @@ public class Library implements Serializable {
 		return member.removeHold(itemId) && item.removeHold(memberId) ? OPERATION_COMPLETED : NO_HOLD_FOUND;
 	}
 
-	public int setReserved(String itemId) {
-		LoanableItem item = catalog.search(itemId);
-		if (item == null) {
-			return (ITEM_NOT_FOUND);
-		}
-
-		return OPERATION_COMPLETED;
-	}
-
 	/**
 	 * Removes all out-of-date holds
 	 */
@@ -261,7 +252,7 @@ public class Library implements Serializable {
 			if (item instanceof Book) {
 				Book book = (Book) item;
 				book.setReserved(true);
-				return 1;
+				return OPERATION_COMPLETED;
 			}
 		}
 		return 0;
