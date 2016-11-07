@@ -285,11 +285,26 @@ public class UserInterface {
 	 */
 	public void issueLoanableItems() {
 		LoanableItem result;
+		Member thisMember;
+		double currentBalance;
 		String memberID = getToken("Enter member id");
-		if (library.searchMembership(memberID) == null) {
+		thisMember = library.searchMembership(memberID);
+		if (thisMember == null) {
 			System.out.println("No such member");
 			return;
 		}
+		currentBalance = thisMember.computeFineBalance();
+		if (currentBalance >= 5.0) {
+			System.out.println("Items cannot be checked out if your balance is greater than or euqal to $5.00.");
+			System.out.println("Currently your balance is " + currentBalance);
+			if (yesOrNo("Would you like to make a payment now to reduce your balance?")) {
+				payBalance();
+			}
+			else {
+				return;
+			}
+		}
+		
 		do {
 			String bookID = getToken("Enter item id");
 			result = library.issueLoanableItem(memberID, bookID);
@@ -582,9 +597,11 @@ public class UserInterface {
 		do {
 			if (result != null && owe != 0.0) {
 				String pay = getToken("Please enter payment amount: ");
-
+				double payDouble = result.calculateBalance();
+				double remain = result.payBalance(payDouble);
+				System.out.println("Remaining balance: " + remain);
 			} else {
-
+				System.out.println("No balance to pay.");
 			}
 		} while (true);
 	}

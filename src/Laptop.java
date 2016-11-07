@@ -73,6 +73,24 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 				+ borrowedBy;
 	}
 
+	public double computeFineItem(LoanableItem item) {
+		double fineTotal = 0.0;
+		int totalHrs = 0;
+		int fee = 0;
+		if (item.isOverDue()) {
+			totalHrs += ((Calendar.getInstance().getTimeInMillis() - item.getDueDate().getTimeInMillis()) / 3600000);
+			fee = totalHrs / 24;
+			if (fee > 24) {
+				fineTotal += 0.10;
+				fee -= 24;
+				if (fee > 0) {
+					fineTotal += ((fee / 24) * 0.05);
+				}
+			}
+		}
+		return fineTotal;
+	}
+
 	/**
 	 * Implements the accept method of the Visitor pattern.
 	 * 

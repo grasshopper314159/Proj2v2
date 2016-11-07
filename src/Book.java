@@ -26,6 +26,8 @@ import java.util.Calendar;
 /**
  * Represents a single book
  * 
+ * Nate Branch Test Commit
+ * 
  * @author Brahma Dathan and Sarnath Ramnath
  *
  */
@@ -100,6 +102,31 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	@Override
 	public String toString() {
 		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
+	}
+
+	public double computeFineItem(LoanableItem item) {
+		double fineTotal = 0.0;
+		int totalHrs = 0;
+		int fee = 0;
+		if (item.isOverDue() && (item instanceof Book)) {
+			Book bk = (Book) item;
+			if (bk.isReserved()) {
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - bk.getDueDate().getTimeInMillis()) / 3600000);
+				fineTotal += 1.0 * totalHrs;
+			} else {
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - item.getDueDate().getTimeInMillis())
+						/ 3600000);
+				fee = totalHrs / 24;
+				if (fee > 24) {
+					fineTotal += 0.10;
+					fee -= 24;
+					if (fee > 0) {
+						fineTotal += ((fee / 24) * 0.05);
+					}
+				}
+			}
+		}
+		return fineTotal;
 	}
 
 	/**
