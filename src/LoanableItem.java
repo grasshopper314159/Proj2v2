@@ -42,6 +42,7 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	private String id;
 	protected Member borrowedBy;
 	protected Calendar dueDate;
+	private boolean isReserved = false;
 	private List<Hold> holds = new LinkedList<Hold>();
 
 	/**
@@ -60,6 +61,10 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	public LoanableItem(String id) {
 		this.id = id;
 		// TODO Auto-generated constructor stub
+	}
+
+	public boolean isReserved() {
+		return isReserved;
 	}
 
 	/**
@@ -259,19 +264,19 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		double totalFine = 0;
 		if (this instanceof Book) {
 			Book bk = (Book) this;
-			totalFine = bk.computeFineItem();
+			totalFine = bk.computeFineItem(this);
 		}
 		if (this instanceof Camera) {
 			Camera cam = (Camera) this;
-			totalFine = cam.computeFineItem();
+			totalFine = cam.computeFineItem(this);
 		}
 		if (this instanceof DVD) {
 			Camera dvd = (Camera) this;
-			totalFine = dvd.computeFineItem();
+			totalFine = dvd.computeFineItem(this);
 		}
 		if (this instanceof Laptop) {
 			Laptop lap = (Laptop) this;
-			totalFine = lap.computeFineItem();
+			totalFine = lap.computeFineItem(this);
 		}
 		return totalFine;
 	}
