@@ -343,7 +343,7 @@ public class Member implements Serializable, Matchable<String> {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
 			if (item.isOverDue()) {
-				// balance += item.computeFine();
+				balance += item.computeFine();
 			}
 		}
 		return balance + fineBalance;
