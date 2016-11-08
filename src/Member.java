@@ -90,11 +90,13 @@ public class Member implements Serializable, Matchable<String> {
 	public boolean returnItem(LoanableItem loanableItem) {
 		if (itemsBorrowed.remove(loanableItem)) {
 			transactions.add(new Transaction("Item returned ", loanableItem.getTitle()));
+			if (loanableItem.isOverDue()) {
+				fineBalance += loanableItem.computeFine();
+			}
 			return true;
 		}
 		return false;
 	}
-
 	/**
 	 * Marks the item as renewed
 	 * 
