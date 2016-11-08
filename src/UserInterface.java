@@ -592,7 +592,7 @@ public class UserInterface {
 		result = library.validateMember(memberID);
 		if (result == null) {
 			System.out.println("Invalid member id");
-			payBalance();
+			getCommand();
 		}
 		double owe = result.calculateBalance();
 		System.out.println("Current balance: " + owe);
