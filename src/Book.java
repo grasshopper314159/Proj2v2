@@ -35,6 +35,7 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	private static final long serialVersionUID = 1L;
 	private String author;
 	private boolean isReserved = false;
+	private int bookFine = 0;
 
 	/**
 	 * @return the isReserved
@@ -95,6 +96,14 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		return author;
 	}
 
+	public int getBookFine() {
+		return bookFine;
+	}
+
+	public void setBookFine(int bookFine) {
+		this.bookFine = bookFine;
+	}
+
 	/**
 	 * String form of the book
 	 * 
@@ -105,28 +114,27 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	}
 
 	public double computeFineItem() {
-		double fineTotal = 0.0;
 		int totalHrs = 0;
 		int fee = 0;
 		if (this.isOverDue() && (this instanceof Book)) {
 			if (this.isReserved()) {
 				totalHrs += ((Calendar.getInstance().getTimeInMillis() - this.getDueDate().getTimeInMillis())
 						/ 3600000);
-				fineTotal += 1.0 * totalHrs;
+				bookFine += 1.0 * totalHrs;
 			} else {
 				totalHrs += ((Calendar.getInstance().getTimeInMillis() - this.getDueDate().getTimeInMillis())
 						/ 3600000);
 				fee = totalHrs / 24;
 				if (fee > 24) {
-					fineTotal += 0.10;
+					bookFine += 0.10;
 					fee -= 24;
 					if (fee > 0) {
-						fineTotal += ((fee / 24) * 0.05);
+						bookFine += ((fee / 24) * 0.05);
 					}
 				}
 			}
 		}
-		return fineTotal;
+		return bookFine;
 	}
 
 	/**
