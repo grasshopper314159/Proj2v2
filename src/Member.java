@@ -39,7 +39,6 @@ public class Member implements Serializable, Matchable<String> {
 	private String address;
 	private String phone;
 	private String id;
-	private int trackPayment;
 	private double fineBalance;
 	private static final String MEMBER_STRING = "M";
 	private List<LoanableItem> itemsBorrowed = new LinkedList<LoanableItem>();
@@ -97,6 +96,7 @@ public class Member implements Serializable, Matchable<String> {
 		}
 		return false;
 	}
+
 	/**
 	 * Marks the item as renewed
 	 * 
@@ -335,7 +335,6 @@ public class Member implements Serializable, Matchable<String> {
 		for (LoanableItem item : itemsBorrowed) {
 			balance += item.computeFine();
 		}
-		balance -= trackPayment;
 		this.fineBalance = balance;
 		return balance;
 	}
@@ -360,7 +359,6 @@ public class Member implements Serializable, Matchable<String> {
 	 *            reduces fineBalace by amount paid
 	 */
 	public double payBalance(double payment) {
-		trackPayment += payment;
 		this.fineBalance = (this.fineBalance - payment);
 		return this.fineBalance;
 	}

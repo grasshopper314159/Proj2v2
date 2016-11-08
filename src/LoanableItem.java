@@ -274,19 +274,19 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		double totalFine = 0;
 		if (this instanceof Book) {
 			Book bk = (Book) this;
-			totalFine = bk.computeFineItem();
+			totalFine += bk.computeFineItem();
 		}
 		if (this instanceof Camera) {
 			Camera cam = (Camera) this;
-			totalFine = cam.computeFineItem();
+			totalFine += cam.computeFineItem();
 		}
 		if (this instanceof DVD) {
 			DVD dvd = (DVD) this;
-			totalFine = dvd.computeFineItem();
+			totalFine += dvd.computeFineItem();
 		}
 		if (this instanceof Laptop) {
 			Laptop lap = (Laptop) this;
-			totalFine = lap.computeFineItem();
+			totalFine += lap.computeFineItem();
 		}
 		return totalFine;
 	}
