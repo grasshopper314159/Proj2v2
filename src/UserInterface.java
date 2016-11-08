@@ -590,18 +590,15 @@ public class UserInterface {
 		Member result;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
-		if (result == null) {
-			System.out.println("Invalid member id");
-			payBalance();
-		}
 		double owe = result.calculateBalance();
 		System.out.println("Current balance: " + owe);
 
 		do {
-			if (owe != 0.0) {
-				String pay = getToken("Please enter payment amount: ");
-				double payDouble = Double.parseDouble(pay);
-				double remain = result.payBalance(payDouble);
+			if (result != null && owe != 0.0) {
+				String payString = getToken("Please enter payment amount: ");
+				double payment = Double.parseDouble(payString);
+				//double payDouble = result.calculateBalance();
+				double remain = result.payBalance(payment);
 				System.out.println("Remaining balance: " + remain);
 				break;
 			} else {
