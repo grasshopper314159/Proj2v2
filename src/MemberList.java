@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
  * @author Brahma Dathan and Sarnath Ramnath
@@ -72,13 +73,22 @@ public class MemberList extends ItemList<Member, String> {
 		return super.add(member);
 	}
 
+	public boolean removeMember(String memberId) {
+		Member member = search(memberId);
+
+		if (member == null) {
+			return false;
+		} else {
+			return super.remove(member);
+		}
+	}
+
 	/*
 	 * Supports serialization
 	 * 
 	 * @param output the stream to be written to
 	 */
-	private void writeObject(java.io.ObjectOutputStream output)
-			throws IOException {
+	private void writeObject(java.io.ObjectOutputStream output) throws IOException {
 		output.defaultWriteObject();
 		output.writeObject(memberList);
 	}
@@ -88,8 +98,7 @@ public class MemberList extends ItemList<Member, String> {
 	 * 
 	 * @param input the stream to be read from
 	 */
-	private void readObject(java.io.ObjectInputStream input)
-			throws IOException, ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
 		input.defaultReadObject();
 		if (memberList == null) {
 			memberList = (MemberList) input.readObject();

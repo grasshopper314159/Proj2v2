@@ -90,7 +90,7 @@ public class Member implements Serializable, Matchable<String> {
 		if (itemsBorrowed.remove(loanableItem)) {
 			transactions.add(new Transaction("Item returned ", loanableItem.getTitle()));
 			if (loanableItem.isOverDue()) {
-				fineBalance += loanableItem.computeFine();
+				fineBalance += loanableItem.computeFineItem();
 			}
 			return true;
 		}
@@ -331,11 +331,11 @@ public class Member implements Serializable, Matchable<String> {
 	 * @return the balance
 	 */
 	public double calculateBalance() {
-//		double balance = 0.0;
-//		for (LoanableItem item : itemsBorrowed) {
-//			balance += item.computeFine();
-//		}
-//		this.fineBalance = balance ;
+		// double balance = 0.0;
+		// for (LoanableItem item : itemsBorrowed) {
+		// balance += item.computeFine();
+		// }
+		// this.fineBalance = balance ;
 		return fineBalance;
 	}
 
@@ -344,7 +344,7 @@ public class Member implements Serializable, Matchable<String> {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
 			if (item.isOverDue()) {
-				balance += item.computeFine();
+				balance += item.computeFineItem();
 			}
 		}
 		return balance + fineBalance;

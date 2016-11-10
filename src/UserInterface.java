@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -191,7 +192,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out.println("Enter a number between 0 and 16 as explained below:");
+		System.out.println("Enter a number between 0 and 19 as explained below:");
 		System.out.println(EXIT + " to Exit\n");
 		System.out.println(ADD_MEMBER + " to add a member");
 		System.out.println(ADD_ITEMS + " to add items");
@@ -201,7 +202,7 @@ public class UserInterface {
 		System.out.println(RENEW_BOOKS + " to renew books ");
 		System.out.println(CHANGE_DUE_DATE + " to change the due date of an item");
 		System.out.println(REMOVE_MEMBERS + " to remove members");
-		System.out.println(REMOVE_BOOKS + " to remove books");
+		System.out.println(REMOVE_BOOKS + " to remove items");
 		System.out.println(PLACE_HOLD + " to place a hold on a book");
 		System.out.println(REMOVE_HOLD + " to remove a hold on a book");
 		System.out.println(PROCESS_HOLD + " to process holds");
@@ -286,17 +287,15 @@ public class UserInterface {
 	public void issueLoanableItems() {
 		LoanableItem result;
 		Member thisMember;
-		double currentBalance;
 		String memberID = getToken("Enter member id");
 		thisMember = library.searchMembership(memberID);
 		if (thisMember == null) {
 			System.out.println("No such member");
 			return;
 		}
-		currentBalance = thisMember.computeFineBalance();
-		if (currentBalance >= 5.0) {
+		if (thisMember.getBalance() >= 5.0) {
 			System.out.println("Items cannot be checked out if your balance is greater than or euqal to $5.00.");
-			System.out.println("Currently your balance is " + currentBalance);
+			System.out.println("Currently your balance is " + thisMember.getBalance());
 			if (yesOrNo("Would you like to make a payment now to reduce your balance?")) {
 				payBalance();
 			} else {
@@ -320,13 +319,20 @@ public class UserInterface {
 
 	public void changeReservedStatus() {
 		int result;
-		String bookID = getToken("Enter book id");
-		result = library.changeReservedStatus(bookID);
-		if (result == 7) {
-			System.out.println("Reserved is set");
-		} else {
-			System.out.println("Status not changed");
-		}
+		do {
+			String bookID = getToken("Enter book id");
+
+			result = library.changeReservedStatus(bookID);
+			if (result == 7) {
+				System.out.println("Reserved is set");
+			} else {
+				System.out.println("Status not changed");
+			}
+			if (!yesOrNo("Reserve more books?")) {
+				break;
+			}
+		} while (true);
+
 	}
 
 	/**
@@ -357,10 +363,16 @@ public class UserInterface {
 	}
 
 	public void changeDueDate() {
-		String itemID = getToken("Enter item id");
+		do {
+			String itemID = getToken("Enter item id");
 
-		Calendar date = getDate("Please enter the new due date as mm/dd/yy");
-		library.changeDueDate(itemID, date);
+			Calendar date = getDate("Please enter the new due date as mm/dd/yy");
+			library.changeDueDate(itemID, date);
+
+			if (!yesOrNo("Change More Due Dates?")) {
+				break;
+			}
+		} while (true);
 	}
 
 	/**
@@ -409,7 +421,7 @@ public class UserInterface {
 	public void removeLoanableItems() {
 		int result;
 		do {
-			String bookID = getToken("Enter book id");
+			String bookID = getToken("Enter item id");
 			result = library.removeLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -425,7 +437,7 @@ public class UserInterface {
 				System.out.println("Item could not be removed");
 				break;
 			case Library.OPERATION_COMPLETED:
-				System.out.println(" Book has been removed");
+				System.out.println(" Item has been removed");
 				break;
 			default:
 				System.out.println("An error has occurred");
@@ -440,6 +452,16 @@ public class UserInterface {
 		int result;
 		String memberID = getToken("Enter memberID");
 		result = library.removeMember(memberID);
+		switch (result) {
+		case Library.NO_SUCH_MEMBER:
+			System.out.println("Not a valid member ID");
+			break;
+		case Library.OPERATION_COMPLETED:
+			System.out.println("Member Removed");
+			break;
+		default:
+			System.out.println("Member not removed");
+		}
 
 	}
 
@@ -587,28 +609,35 @@ public class UserInterface {
 	}
 
 	public void payBalance() {
+
 		Member result;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
 		if (result == null) {
 			System.out.println("Invalid member id");
-			getCommand();
-		}
-		double owe = result.calculateBalance();
-		System.out.println("Current balance: " + owe);
-
-		do {
-			if (owe != 0.0) {
-				String pay = getToken("Please enter payment amount: ");
-				double payDouble = Double.parseDouble(pay);
-				double remain = result.payBalance(payDouble);
-				System.out.println("Remaining balance: " + remain);
-				break;
+			if (yesOrNo("Try again?")) {
+				payBalance();
 			} else {
-				System.out.println("No balance to pay.");
-				break;
+				return;
 			}
-		} while (true);
+		}
+		double owe = (double) Math.round(result.calculateBalance() * 100) / 100;
+		DecimalFormat decimalNumber = new DecimalFormat(".00");
+
+		System.out.println("Current balance: $" + decimalNumber.format(owe));
+
+		if (owe != 0.0) {
+			String pay = getToken("Please enter payment amount: ");
+			double payDouble = Double.parseDouble(pay);
+			double remain = result.payBalance(payDouble);
+			remain = (double) Math.round(remain * 100) / 100;
+			System.out.println("Remaining balance: $" + decimalNumber.format(remain));
+			// break;
+		} else {
+			System.out.println("No balance to pay.");
+			// break;
+		}
+
 	}
 
 	/**
