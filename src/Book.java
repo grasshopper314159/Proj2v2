@@ -81,10 +81,8 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		if (super.issue(member)) {
 			if (isReserved != true) {
 				dueDate.add(Calendar.MONTH, 1);
-				tempCal = dueDate;
 			} else {
 				dueDate.add(Calendar.HOUR, 2);
-				tempCal = dueDate;
 			}
 			return true;
 		}
@@ -116,33 +114,6 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	public String toString() {
 		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
 	}
-
-	// @Override
-	// public double computeFineItem() {
-	// int totalHrs = 0;
-	// int fee = 0;
-	// if (this.isOverDue()) {
-	// if (this.isReserved()) {
-	// totalHrs += ((this.getDueDate().getTimeInMillis() -
-	// tempCal.getTimeInMillis()) / 3600000);
-	// System.out.println(totalHrs);
-	// bookFine += 1.0 * totalHrs;
-	// tempCal.add(Calendar.HOUR, totalHrs);
-	// } else {
-	// totalHrs += ((this.getDueDate().getTimeInMillis() -
-	// tempCal.getTimeInMillis()) / 3600000);
-	// fee = totalHrs / 24;
-	// if (fee > 24 && (bookFine >= 0.10)) {
-	// bookFine += ((fee / 24) * 0.05);
-	// } else {
-	// bookFine += 0.10;
-	// }
-	// }
-	// tempCal.add(Calendar.HOUR, totalHrs);
-	// }
-	// System.out.println("Book Fine from Book.computeFineItem " + bookFine);
-	// return bookFine;
-	// }
 
 	/**
 	 * Implements the accept method of the Visitor pattern.

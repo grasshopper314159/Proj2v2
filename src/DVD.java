@@ -22,6 +22,7 @@ package src;
  */
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Represents a single DVD
@@ -63,6 +64,17 @@ public class DVD extends LoanableItem implements Serializable, Matchable<String>
 		return false;
 	}
 
+	@Override
+	public int daysOverDue() {
+		Calendar now = new GregorianCalendar();
+		if (now.get(Calendar.DAY_OF_YEAR) - dueDate.get(Calendar.DAY_OF_YEAR) > 7) {
+			int daysDiff = (now.get(Calendar.DAY_OF_YEAR) - dueDate.get(Calendar.DAY_OF_YEAR) - 7);
+			return daysDiff;
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * String form of the DVD
 	 * 
@@ -71,25 +83,6 @@ public class DVD extends LoanableItem implements Serializable, Matchable<String>
 	public String toString() {
 		return super.toString() + " Title " + getTitle() + " borrowed by " + borrowedBy;
 	}
-
-	// public double computeFineItem() {
-	// double fineTotal = 0.0;
-	// int totalHrs = 0;
-	// int fee = 0;
-	// if (this.isOverDue()) {
-	// totalHrs += ((Calendar.getInstance().getTimeInMillis() -
-	// this.getDueDate().getTimeInMillis()) / 3600000);
-	// fee = totalHrs / 24;
-	// if (fee > 24) {
-	// fineTotal += 0.10;
-	// fee -= 24;
-	// if (fee > 0) {
-	// fineTotal += ((fee / 24) * 0.05);
-	// }
-	// }
-	// }
-	// return fineTotal;
-	// }
 
 	/**
 	 * Implements the accept method of the Visitor pattern.

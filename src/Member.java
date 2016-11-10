@@ -311,33 +311,18 @@ public class Member implements Serializable, Matchable<String> {
 	/**
 	 * @return the balance
 	 */
-	public void calcBalance() {
-		// check if item is overdue
-		// look at loanable items issued
-		// checkOverdue(loanableitem)
-		// for (ListIterator<LoanableItem> iterator =
-		// itemsBorrowed.listIterator(); iterator.hasNext();) {
-		// LoanableItem aLoanableItem = iterator.next();
-		// String id = aLoanableItem.getId();
-		// if (id.equals(loanableItem.getId())) {
-		// transactions.add(new Transaction("Item renewed ",
-		// loanableItem.getTitle()));
-		// return true;
-		// }
-		// }
-	}
 
 	/**
 	 * @return the balance
 	 */
-	public double calculateBalance() {
-		// double balance = 0.0;
-		// for (LoanableItem item : itemsBorrowed) {
-		// balance += item.computeFine();
-		// }
-		// this.fineBalance = balance ;
-		return fineBalance;
-	}
+	// public double calculateBalance() {
+	// // double balance = 0.0;
+	// // for (LoanableItem item : itemsBorrowed) {
+	// // balance += item.computeFine();
+	// // }
+	// // this.fineBalance = balance ;
+	// return fineBalance;
+	// }
 
 	public double computeFineBalance() {
 		double balance = 0.0;

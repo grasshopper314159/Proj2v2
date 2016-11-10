@@ -385,7 +385,6 @@ public class UserInterface {
 		int result;
 		do {
 			String bookID = getToken("Enter item id");
-			// Add overdue check here
 			result = library.returnLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -621,7 +620,7 @@ public class UserInterface {
 				return;
 			}
 		}
-		double owe = (double) Math.round(result.calculateBalance() * 100) / 100;
+		double owe = (double) Math.round(result.getBalance() * 100) / 100;
 		DecimalFormat decimalNumber = new DecimalFormat(".00");
 
 		System.out.println("Current balance: $" + decimalNumber.format(owe));

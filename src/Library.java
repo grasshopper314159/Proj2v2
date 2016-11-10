@@ -388,9 +388,10 @@ public class Library implements Serializable {
 		if (loanableItem.hasHold()) {
 			member.setFineBalance(member.getBalance() + loanableItem.computeFineItem());
 			return (ITEM_HAS_HOLD);
+		} else {
+			member.setFineBalance(member.getBalance() + loanableItem.computeFineItem());
+			return (OPERATION_COMPLETED);
 		}
-		member.setFineBalance(member.getBalance() + loanableItem.computeFineItem());
-		return (OPERATION_COMPLETED);
 	}
 
 	/**

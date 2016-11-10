@@ -22,6 +22,7 @@ package src;
  */
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Represents a single Camera
@@ -65,6 +66,28 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 		return false;
 	}
 
+	@Override
+	public double hoursOverDue() {
+		Calendar now = new GregorianCalendar();
+
+		double hoursDiff = (now.getTimeInMillis() - dueDate.getTimeInMillis()) / 3600000;
+		if (hoursDiff > 3) {
+			return hoursDiff - 3;
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public double computeFineItem() {
+		double fineTotal = 0.0;
+		if (this.isOverDue()) {
+			System.out.println(hoursOverDue());
+			fineTotal = hoursOverDue();
+		}
+		return fineTotal;
+	}
+
 	/**
 	 * Getter for author
 	 * 
@@ -83,25 +106,6 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 		return super.toString() + " Camera brand " + super.getTitle() + " " + super.getId() + " borrowed by "
 				+ borrowedBy;
 	}
-
-	// public double computeFineItem() {
-	// double fineTotal = 0.0;
-	// int totalHrs = 0;
-	// int fee = 0;
-	// if (this.isOverDue()) {
-	// totalHrs += ((Calendar.getInstance().getTimeInMillis() -
-	// this.getDueDate().getTimeInMillis()) / 3600000);
-	// fee = totalHrs / 24;
-	// if (fee > 24) {
-	// fineTotal += 0.10;
-	// fee -= 24;
-	// if (fee > 0) {
-	// fineTotal += ((fee / 24) * 0.05);
-	// }
-	// }
-	// }
-	// return fineTotal;
-	// }
 
 	/**
 	 * Implements the accept method of the Visitor pattern.
