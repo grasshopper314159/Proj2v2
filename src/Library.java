@@ -350,8 +350,20 @@ public class Library implements Serializable {
 	}
 
 	public int removeMember(String memberID) {
-		System.out.println("I don't do anything yet");
-		return OPERATION_COMPLETED;
+		Member member = memberList.search(memberID);
+
+		if (member == null) {
+			return (NO_SUCH_MEMBER);
+		}
+		if (member.getBalance() == 0 && !member.getLoanableItemsIssued().hasNext()) {
+			System.out.println();
+			// if (member.getBalance() == 0 && member.getLoanableItemsIssued()
+			// == null) {
+			memberList.removeMember(memberID);
+			System.out.println(member);
+			return (OPERATION_COMPLETED);
+		}
+		return (OPERATION_FAILED);
 	}
 
 	/**

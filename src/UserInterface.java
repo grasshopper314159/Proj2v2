@@ -191,7 +191,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out.println("Enter a number between 0 and 16 as explained below:");
+		System.out.println("Enter a number between 0 and 19 as explained below:");
 		System.out.println(EXIT + " to Exit\n");
 		System.out.println(ADD_MEMBER + " to add a member");
 		System.out.println(ADD_ITEMS + " to add items");
@@ -201,7 +201,7 @@ public class UserInterface {
 		System.out.println(RENEW_BOOKS + " to renew books ");
 		System.out.println(CHANGE_DUE_DATE + " to change the due date of an item");
 		System.out.println(REMOVE_MEMBERS + " to remove members");
-		System.out.println(REMOVE_BOOKS + " to remove books");
+		System.out.println(REMOVE_BOOKS + " to remove items");
 		System.out.println(PLACE_HOLD + " to place a hold on a book");
 		System.out.println(REMOVE_HOLD + " to remove a hold on a book");
 		System.out.println(PROCESS_HOLD + " to process holds");
@@ -451,6 +451,16 @@ public class UserInterface {
 		int result;
 		String memberID = getToken("Enter memberID");
 		result = library.removeMember(memberID);
+		switch (result) {
+		case Library.NO_SUCH_MEMBER:
+			System.out.println("Not a valid member ID");
+			break;
+		case Library.OPERATION_COMPLETED:
+			System.out.println("Member Removed");
+			break;
+		default:
+			System.out.println("Member not removed");
+		}
 
 	}
 
