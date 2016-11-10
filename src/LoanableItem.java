@@ -272,30 +272,30 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		visitor.visit(this);
 	}
 
-	public double computeFine() {
-		double totalFine = 0;
-		LoanableItem item = this;
-		totalFine += item.computeFineItem();
-		// }
-		// if (this instanceof Book) {
-		// Book bk = (Book) this;
-		// totalFine += bk.computeFineItem();
-		// }
-		// if (this instanceof Camera) {
-		// Camera cam = (Camera) this;
-		// totalFine += cam.computeFineItem();
-		// }
-		// if (this instanceof DVD) {
-		// DVD dvd = (DVD) this;
-		// totalFine += dvd.computeFineItem();
-		// }
-		// if (this instanceof Laptop) {
-		// Laptop lap = (Laptop) this;
-		// totalFine += lap.computeFineItem();
-		// }
-		return totalFine;
-
-	}
+	// public double computeFine() {
+	// double totalFine = 0;
+	// LoanableItem item = this;
+	// totalFine += item.computeFineItem();
+	// // }
+	// // if (this instanceof Book) {
+	// // Book bk = (Book) this;
+	// // totalFine += bk.computeFineItem();
+	// // }
+	// // if (this instanceof Camera) {
+	// // Camera cam = (Camera) this;
+	// // totalFine += cam.computeFineItem();
+	// // }
+	// // if (this instanceof DVD) {
+	// // DVD dvd = (DVD) this;
+	// // totalFine += dvd.computeFineItem();
+	// // }
+	// // if (this instanceof Laptop) {
+	// // Laptop lap = (Laptop) this;
+	// // totalFine += lap.computeFineItem();
+	// // }
+	// return totalFine;
+	//
+	// }
 
 	public double computeFineItem() {
 		int totalHrs = 0;
