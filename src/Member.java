@@ -360,4 +360,14 @@ public class Member implements Serializable, Matchable<String> {
 		}
 		return false;
 	}
+
+	public boolean hasCameraCheckedOut() {
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
+			LoanableItem item = iterator.next();
+			if (item instanceof Camera) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
