@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -608,28 +609,35 @@ public class UserInterface {
 	}
 
 	public void payBalance() {
+
 		Member result;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
 		if (result == null) {
 			System.out.println("Invalid member id");
-			getCommand();
-		}
-		double owe = result.calculateBalance();
-		System.out.println("Current balance: " + owe);
-
-		do {
-			if (owe != 0.0) {
-				String pay = getToken("Please enter payment amount: ");
-				double payDouble = Double.parseDouble(pay);
-				double remain = result.payBalance(payDouble);
-				System.out.println("Remaining balance: " + remain);
-				break;
+			if (yesOrNo("Try again?")) {
+				payBalance();
 			} else {
-				System.out.println("No balance to pay.");
-				break;
+				return;
 			}
-		} while (true);
+		}
+		double owe = (double) Math.round(result.calculateBalance() * 100) / 100;
+		DecimalFormat decimalNumber = new DecimalFormat(".00");
+
+		System.out.println("Current balance: $" + decimalNumber.format(owe));
+
+		if (owe != 0.0) {
+			String pay = getToken("Please enter payment amount: ");
+			double payDouble = Double.parseDouble(pay);
+			double remain = result.payBalance(payDouble);
+			remain = (double) Math.round(remain * 100) / 100;
+			System.out.println("Remaining balance: $" + decimalNumber.format(remain));
+			// break;
+		} else {
+			System.out.println("No balance to pay.");
+			// break;
+		}
+
 	}
 
 	/**
