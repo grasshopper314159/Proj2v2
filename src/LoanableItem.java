@@ -153,6 +153,16 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		}
 	}
 
+	public int daysOverDue2() {
+		Calendar now = new GregorianCalendar();
+		if ((now.getInstance().DAY_OF_YEAR - getDueDate().DAY_OF_YEAR) > 0) {
+			int daysDiff = now.getInstance().DAY_OF_YEAR - getDueDate().DAY_OF_YEAR;
+			return daysDiff;
+		} else {
+			return 0;
+		}
+	}
+
 	public double hoursOverDue() {
 		Calendar now = new GregorianCalendar();
 
@@ -296,13 +306,12 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	public double computeFineItem() {
 		double fineTotal = 0.0;
 		if (isReserved() && this.isOverDue()) {
-			System.out.println(hoursOverDue());
+			System.out.println("hrs overDue: " + hoursOverDue());
 			fineTotal = hoursOverDue();
 		}
 		if (this.isOverDue()) {
-
-			System.out.println(daysOverDue());
-			fineTotal = (.1 + ((daysOverDue() - 1) * .05));
+			System.out.println("days overDue" + daysOverDue2());
+			fineTotal = (.1 + ((daysOverDue2() - 1) * .05));
 		}
 		return fineTotal;
 	}
