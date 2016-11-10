@@ -66,6 +66,10 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 		return false;
 	}
 
+	/**
+	 * Method to calculate the number of hours a camera is overdue Overrides
+	 * hoursOverDue in LoanableItem
+	 */
 	@Override
 	public double hoursOverDue() {
 		Calendar now = new GregorianCalendar();
@@ -78,6 +82,10 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 		}
 	}
 
+	/**
+	 * Method to calculate the number of hours a camera is overdue Overrides
+	 * computeFineItem in LoanableItem
+	 */
 	@Override
 	public double computeFineItem() {
 		double fineTotal = 0.0;

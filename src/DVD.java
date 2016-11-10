@@ -64,6 +64,10 @@ public class DVD extends LoanableItem implements Serializable, Matchable<String>
 		return false;
 	}
 
+	/**
+	 * Method to calculate the number of days a DVD is overdue Overrides
+	 * daysOverDue in LoanableItem
+	 */
 	@Override
 	public int daysOverDue() {
 		Calendar now = new GregorianCalendar();

@@ -61,12 +61,14 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		this.id = id;
 		this.title = title;
 	}
+	// constructor with only 1 parameter
 
 	public LoanableItem(String id) {
 		this.id = id;
 		// TODO Auto-generated constructor stub
 	}
 
+	// Reserved status true or false
 	public boolean isReserved() {
 		return isReserved;
 	}
@@ -131,6 +133,11 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		this.dueDate = dueDate;
 	}
 
+	/**
+	 * Calculates if an item is overdue
+	 * 
+	 * @return boolean
+	 */
 	public boolean isOverDue() {
 
 		Calendar now = new GregorianCalendar();
@@ -143,16 +150,30 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		return false;
 	}
 
+	/**
+	 * Method to calculate the number of days an item is overdue Superclass
+	 * method defaults to 1 month borrowing period
+	 * 
+	 * @return
+	 */
 	public int daysOverDue() {
 		Calendar now = new GregorianCalendar();
 		if (now.get(Calendar.MONTH) - dueDate.get(Calendar.MONTH) > 0) {
-			int daysDiff = now.get(Calendar.DAY_OF_MONTH) - dueDate.get(Calendar.DAY_OF_MONTH);
+			int daysDiff = (now.get(Calendar.DAY_OF_YEAR) - dueDate.get(Calendar.DAY_OF_YEAR)) - 30;
+			System.out.println("Days OVer Due = " + daysDiff);
 			return daysDiff;
+
 		} else {
 			return 0;
 		}
 	}
 
+	/**
+	 * Method to calculate the number of hours an item is overdue Superclass
+	 * method defaults to 2 hour borrowing period
+	 * 
+	 * @return
+	 */
 	public double hoursOverDue() {
 		Calendar now = new GregorianCalendar();
 
@@ -269,6 +290,11 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		}
 	}
 
+	/**
+	 * Simplified, readable date format
+	 * 
+	 * @return
+	 */
 	public String getConvertedDueDate() {
 		if (dueDate != null) {
 			DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm");
@@ -293,14 +319,18 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		visitor.visit(this);
 	}
 
+	/**
+	 * Method to calculate the fine based on number of days an item is overdue.
+	 * Superclass method
+	 * 
+	 * @return
+	 */
 	public double computeFineItem() {
 		double fineTotal = 0.0;
 		if (isReserved() && this.isOverDue()) {
-			// System.out.println("hrs overDue: " + hoursOverDue());
 			fineTotal = hoursOverDue();
 		}
 		if (this.isOverDue()) {
-			// System.out.println("days overDue " + daysOverDue());
 			fineTotal = (.1 + ((daysOverDue() - 1) * .05));
 		}
 		return fineTotal;

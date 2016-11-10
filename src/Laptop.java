@@ -64,6 +64,11 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 		return false;
 	}
 
+	/**
+	 * Method to calculate the number of hours a laptop is overdue Overrides
+	 * hoursOverDue in LoanableItem
+	 */
+
 	@Override
 	public double hoursOverDue() {
 		Calendar now = new GregorianCalendar();
@@ -76,6 +81,10 @@ public class Laptop extends LoanableItem implements Serializable, Matchable<Stri
 		}
 	}
 
+	/**
+	 * Method to calculate the number of hours a laptop is overdue Overrides
+	 * computeFineItem in LoanableItem
+	 */
 	@Override
 	public double computeFineItem() {
 		double fineTotal = 0.0;

@@ -243,6 +243,12 @@ public class Library implements Serializable {
 		return (item);
 	}
 
+	/**
+	 * Method to set the status of an item to reserved
+	 * 
+	 * @param itemId
+	 * @return int
+	 */
 	public int changeReservedStatus(String itemId) {
 		LoanableItem item = catalog.search(itemId);
 
@@ -258,6 +264,13 @@ public class Library implements Serializable {
 		return 0;
 	}
 
+	/**
+	 * Method to change the due date of an item
+	 * 
+	 * @param itemId
+	 * @param dueDate
+	 * @return int
+	 */
 	public int changeDueDate(String itemId, Calendar dueDate) {
 
 		LoanableItem item = catalog.search(itemId);
@@ -316,6 +329,12 @@ public class Library implements Serializable {
 		}
 	}
 
+	/**
+	 * Method to return the current balance for a Member
+	 * 
+	 * @param memberId
+	 * @return double
+	 */
 	public double getMemberBalance(String memberId) {
 		Member member = memberList.search(memberId);
 		if (member == null) {
@@ -349,6 +368,13 @@ public class Library implements Serializable {
 		return (OPERATION_FAILED);
 	}
 
+	/**
+	 * Method to remove a member from MenberList only allows removal if no
+	 * balance and no items issued
+	 * 
+	 * @param memberID
+	 * @return
+	 */
 	public int removeMember(String memberID) {
 		Member member = memberList.search(memberID);
 
@@ -412,6 +438,10 @@ public class Library implements Serializable {
 		return member.getTransactions(date);
 	}
 
+	/**
+	 * 
+	 * @param visitor
+	 */
 	public void processLoanableItems(LoanableItemVisitor visitor) {
 		for (Iterator<LoanableItem> itemIterator = catalog.iterator(); itemIterator.hasNext();) {
 			itemIterator.next().accept(visitor);
@@ -501,6 +531,12 @@ public class Library implements Serializable {
 		}
 	}
 
+	/**
+	 * Method to check if a member has a balance of $5 or more
+	 * 
+	 * @param member
+	 * @return boolean
+	 */
 	public boolean checkRestrictions(Member member) {
 		if (member.getFineBalance() >= 5.0) {
 			return true;

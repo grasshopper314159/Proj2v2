@@ -335,6 +335,11 @@ public class Member implements Serializable, Matchable<String> {
 		return balance + fineBalance;
 	}
 
+	/**
+	 * Getter for a member balance
+	 * 
+	 * @return double
+	 */
 	public double getBalance() {
 		return fineBalance;
 	}
@@ -348,6 +353,11 @@ public class Member implements Serializable, Matchable<String> {
 		return this.fineBalance;
 	}
 
+	/**
+	 * Method to check if a member has a reserved item checked out
+	 * 
+	 * @return boolean
+	 */
 	public boolean hasReservedItemCheckedOut() {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
@@ -361,6 +371,11 @@ public class Member implements Serializable, Matchable<String> {
 		return false;
 	}
 
+	/**
+	 * Method to check if a member has a camera checked out
+	 * 
+	 * @return boolean
+	 */
 	public boolean hasCameraCheckedOut() {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();

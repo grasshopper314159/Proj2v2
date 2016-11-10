@@ -48,7 +48,7 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 
 	/**
 	 * @param isReserved
-	 *            the isReserved to set
+	 *            the status of isReserved
 	 */
 	public void setReserved(boolean isReserved) {
 		this.isReserved = isReserved;
@@ -98,10 +98,19 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		return author;
 	}
 
+	/**
+	 * Getter for bookFine
+	 * 
+	 * @return bookFine
+	 */
 	public int getBookFine() {
 		return bookFine;
 	}
 
+	/**
+	 * Setter for bookFine
+	 * 
+	 */
 	public void setBookFine(int bookFine) {
 		this.bookFine = bookFine;
 	}
