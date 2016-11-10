@@ -297,26 +297,46 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	//
 	// }
 
+	// public double computeFineItem() {
+	// int totalHrs = 0;
+	// int fee = 0;
+	// if (this.isOverDue()) {
+	// if (this.isReserved()) {
+	// totalHrs += ((Calendar.getInstance().getTimeInMillis() -
+	// tempCal.getTimeInMillis()) / 3600000);
+	// itemFine += 1.0 * totalHrs;
+	// tempCal.add(Calendar.HOUR, totalHrs);
+	// } else {
+	// totalHrs += ((Calendar.getInstance().getTimeInMillis() -
+	// tempCal.getTimeInMillis()) / 3600000);
+	// fee = totalHrs / 24;
+	// if (fee > 24 && (itemFine >= 0.10)) {
+	// itemFine += ((fee / 24) * 0.05);
+	// } else {
+	// itemFine += 0.10;
+	// }
+	// }
+	// tempCal.add(Calendar.HOUR, totalHrs);
+	// }
+	// return itemFine;
+	// }
 	public double computeFineItem() {
+		double fineTotal = 0.0;
 		int totalHrs = 0;
 		int fee = 0;
 		if (this.isOverDue()) {
-			if (this.isReserved()) {
-				totalHrs += ((Calendar.getInstance().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
-				itemFine += 1.0 * totalHrs;
-				tempCal.add(Calendar.HOUR, totalHrs);
-			} else {
-				totalHrs += ((Calendar.getInstance().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
-				fee = totalHrs / 24;
-				if (fee > 24 && (itemFine >= 0.10)) {
-					itemFine += ((fee / 24) * 0.05);
-				} else {
-					itemFine += 0.10;
+			totalHrs += ((Calendar.getInstance().getTimeInMillis() - this.getDueDate().getTimeInMillis()) / 3600000);
+			fee = totalHrs / 24;
+			System.out.println("Hours? or Days? " + fee);
+			if (fee > 24) {
+				fineTotal += 0.10;
+				fee -= 24;
+				if (fee > 0) {
+					fineTotal += ((fee / 24) * 0.05);
 				}
 			}
-			tempCal.add(Calendar.HOUR, totalHrs);
 		}
-		return itemFine;
+		return fineTotal;
 	}
 
 }

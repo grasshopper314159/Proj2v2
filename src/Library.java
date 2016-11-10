@@ -500,6 +500,14 @@ public class Library implements Serializable {
 		}
 	}
 
+	public boolean checkRestrictions(Member member) {
+		if (member.getFineBalance() >= 5.0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * String form of the library
 	 * 
