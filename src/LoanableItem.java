@@ -46,6 +46,8 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	protected Calendar dueDate;
 	private boolean isReserved = false;
 	private List<Hold> holds = new LinkedList<Hold>();
+	private int itemFine = 0;
+	private Calendar tempCal;
 
 	/**
 	 * Takes in the title and id stores them.
@@ -272,23 +274,49 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 
 	public double computeFine() {
 		double totalFine = 0;
-		if (this instanceof Book) {
-			Book bk = (Book) this;
-			totalFine += bk.computeFineItem();
-		}
-		if (this instanceof Camera) {
-			Camera cam = (Camera) this;
-			totalFine += cam.computeFineItem();
-		}
-		if (this instanceof DVD) {
-			DVD dvd = (DVD) this;
-			totalFine += dvd.computeFineItem();
-		}
-		if (this instanceof Laptop) {
-			Laptop lap = (Laptop) this;
-			totalFine += lap.computeFineItem();
-		}
+		LoanableItem item = this;
+		totalFine += item.computeFineItem();
+		// }
+		// if (this instanceof Book) {
+		// Book bk = (Book) this;
+		// totalFine += bk.computeFineItem();
+		// }
+		// if (this instanceof Camera) {
+		// Camera cam = (Camera) this;
+		// totalFine += cam.computeFineItem();
+		// }
+		// if (this instanceof DVD) {
+		// DVD dvd = (DVD) this;
+		// totalFine += dvd.computeFineItem();
+		// }
+		// if (this instanceof Laptop) {
+		// Laptop lap = (Laptop) this;
+		// totalFine += lap.computeFineItem();
+		// }
 		return totalFine;
+
+	}
+
+	public double computeFineItem() {
+		int totalHrs = 0;
+		int fee = 0;
+		if (this.isOverDue()) {
+			if (this.isReserved()) {
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
+				itemFine += 1.0 * totalHrs;
+				tempCal.add(Calendar.HOUR, totalHrs);
+			} else {
+				totalHrs += ((Calendar.getInstance().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
+				fee = totalHrs / 24;
+				if (fee > 24 && (itemFine >= 0.10)) {
+					itemFine += ((fee / 24) * 0.05);
+				} else {
+					itemFine += 0.10;
+				}
+			}
+			tempCal.add(Calendar.HOUR, totalHrs);
+		}
+		return itemFine;
 	}
 
 }

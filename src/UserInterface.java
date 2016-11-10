@@ -286,17 +286,15 @@ public class UserInterface {
 	public void issueLoanableItems() {
 		LoanableItem result;
 		Member thisMember;
-		double currentBalance;
 		String memberID = getToken("Enter member id");
 		thisMember = library.searchMembership(memberID);
 		if (thisMember == null) {
 			System.out.println("No such member");
 			return;
 		}
-		currentBalance = thisMember.computeFineBalance();
-		if (currentBalance >= 5.0) {
+		if (thisMember.getBalance() >= 5.0) {
 			System.out.println("Items cannot be checked out if your balance is greater than or euqal to $5.00.");
-			System.out.println("Currently your balance is " + currentBalance);
+			System.out.println("Currently your balance is " + thisMember.getBalance());
 			if (yesOrNo("Would you like to make a payment now to reduce your balance?")) {
 				payBalance();
 			} else {
@@ -320,13 +318,20 @@ public class UserInterface {
 
 	public void changeReservedStatus() {
 		int result;
-		String bookID = getToken("Enter book id");
-		result = library.changeReservedStatus(bookID);
-		if (result == 7) {
-			System.out.println("Reserved is set");
-		} else {
-			System.out.println("Status not changed");
-		}
+		do {
+			String bookID = getToken("Enter book id");
+
+			result = library.changeReservedStatus(bookID);
+			if (result == 7) {
+				System.out.println("Reserved is set");
+			} else {
+				System.out.println("Status not changed");
+			}
+			if (!yesOrNo("Reserve more books?")) {
+				break;
+			}
+		} while (true);
+
 	}
 
 	/**
@@ -357,10 +362,16 @@ public class UserInterface {
 	}
 
 	public void changeDueDate() {
-		String itemID = getToken("Enter item id");
+		do {
+			String itemID = getToken("Enter item id");
 
-		Calendar date = getDate("Please enter the new due date as mm/dd/yy");
-		library.changeDueDate(itemID, date);
+			Calendar date = getDate("Please enter the new due date as mm/dd/yy");
+			library.changeDueDate(itemID, date);
+
+			if (!yesOrNo("Change More Due Dates?")) {
+				break;
+			}
+		} while (true);
 	}
 
 	/**
@@ -409,7 +420,7 @@ public class UserInterface {
 	public void removeLoanableItems() {
 		int result;
 		do {
-			String bookID = getToken("Enter book id");
+			String bookID = getToken("Enter item id");
 			result = library.removeLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -425,7 +436,7 @@ public class UserInterface {
 				System.out.println("Item could not be removed");
 				break;
 			case Library.OPERATION_COMPLETED:
-				System.out.println(" Book has been removed");
+				System.out.println(" Item has been removed");
 				break;
 			default:
 				System.out.println("An error has occurred");
