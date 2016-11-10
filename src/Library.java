@@ -240,6 +240,12 @@ public class Library implements Serializable {
 		if (!(item.issue(member) && member.issue(item))) {
 			return null;
 		}
+		if (checkRestrictions(member)) {
+			return null;
+		}
+		if (member.hasReservedItemCheckedOut() && item.isReserved()) {
+			return null;
+		}
 		return (item);
 	}
 
