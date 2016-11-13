@@ -81,12 +81,13 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	 * @return true iff the operations is successful
 	 */
 	public boolean issue(Member member) {
-		if (borrowedBy != null) {
+		if ((borrowedBy == null | borrowedBy == member) && isOverDue() == false) {
+			dueDate = new GregorianCalendar().getInstance();
+			borrowedBy = member;
+			return true;
+		} else {
 			return false;
 		}
-		dueDate = new GregorianCalendar().getInstance();
-		borrowedBy = member;
-		return true;
 	}
 
 	/**
