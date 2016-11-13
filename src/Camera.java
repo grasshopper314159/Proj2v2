@@ -97,15 +97,6 @@ public class Camera extends LoanableItem implements Serializable, Matchable<Stri
 	}
 
 	/**
-	 * Getter for author
-	 * 
-	 * @return author name
-	 */
-	// public String getBrand() {
-	// return brand;
-	// }
-
-	/**
 	 * String form of the Camera
 	 * 
 	 */

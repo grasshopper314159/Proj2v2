@@ -90,20 +90,22 @@ public class MemberList extends ItemList<Member, String> {
 		}
 	}
 
-	/*
+	/**
 	 * Supports serialization
 	 * 
-	 * @param output the stream to be written to
+	 * @param output
+	 *            the stream to be written to
 	 */
 	private void writeObject(java.io.ObjectOutputStream output) throws IOException {
 		output.defaultWriteObject();
 		output.writeObject(memberList);
 	}
 
-	/*
+	/**
 	 * Supports serialization
 	 * 
-	 * @param input the stream to be read from
+	 * @param input
+	 *            the stream to be read from
 	 */
 	private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
 		input.defaultReadObject();

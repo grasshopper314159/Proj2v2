@@ -1,4 +1,5 @@
 package src;
+
 /**
  * 
 
@@ -76,24 +77,24 @@ public class Catalog extends ItemList<LoanableItem, String> {
 		return super.add(loanableItem);
 	}
 
-	/*
+	/**
 	 * Supports serialization
 	 * 
-	 * @param output the stream to be written to
+	 * @param output
+	 *            the stream to be written to
 	 */
-	private void writeObject(java.io.ObjectOutputStream output)
-			throws IOException {
+	private void writeObject(java.io.ObjectOutputStream output) throws IOException {
 		output.defaultWriteObject();
 		output.writeObject(catalog);
 	}
 
-	/*
+	/**
 	 * Supports deserialization
 	 * 
-	 * @param input the stream to be read from
+	 * @param input
+	 *            the stream to be read from
 	 */
-	private void readObject(java.io.ObjectInputStream input)
-			throws IOException, ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream input) throws IOException, ClassNotFoundException {
 		input.defaultReadObject();
 		if (catalog == null) {
 			catalog = (Catalog) input.readObject();

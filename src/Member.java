@@ -309,21 +309,10 @@ public class Member implements Serializable, Matchable<String> {
 	}
 
 	/**
-	 * @return the balance
+	 * Computes the total fine balance
+	 * 
+	 * @return double
 	 */
-
-	/**
-	 * @return the balance
-	 */
-	// public double calculateBalance() {
-	// // double balance = 0.0;
-	// // for (LoanableItem item : itemsBorrowed) {
-	// // balance += item.computeFine();
-	// // }
-	// // this.fineBalance = balance ;
-	// return fineBalance;
-	// }
-
 	public double computeFineBalance() {
 		double balance = 0.0;
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
