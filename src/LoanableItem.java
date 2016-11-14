@@ -21,6 +21,8 @@ package src;
  * and are not responsible for any loss or damage resulting from its use.  
  */
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -42,7 +44,10 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	private String id;
 	protected Member borrowedBy;
 	protected Calendar dueDate;
+	private boolean isReserved = false;
 	private List<Hold> holds = new LinkedList<Hold>();
+	private int itemFine = 0;
+	private Calendar tempCal;
 
 	/**
 	 * Takes in the title and id stores them.
@@ -56,10 +61,16 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		this.id = id;
 		this.title = title;
 	}
+	// constructor with only 1 parameter
 
 	public LoanableItem(String id) {
 		this.id = id;
 		// TODO Auto-generated constructor stub
+	}
+
+	// Reserved status true or false
+	public boolean isReserved() {
+		return isReserved;
 	}
 
 	/**
@@ -67,15 +78,16 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 	 * 
 	 * @param member
 	 *            The member to whom the item should be issued
-	 * @return true iff the operations is syuccessful
+	 * @return true iff the operations is successful
 	 */
 	public boolean issue(Member member) {
-		if (borrowedBy != null) {
+		if ((borrowedBy == null | borrowedBy == member)) {
+			dueDate = new GregorianCalendar().getInstance();
+			borrowedBy = member;
+			return true;
+		} else {
 			return false;
 		}
-		dueDate = new GregorianCalendar();
-		borrowedBy = member;
-		return true;
 	}
 
 	/**
@@ -122,6 +134,11 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		this.dueDate = dueDate;
 	}
 
+	/**
+	 * Calculates if an item is overdue
+	 * 
+	 * @return boolean
+	 */
 	public boolean isOverDue() {
 
 		Calendar now = new GregorianCalendar();
@@ -132,6 +149,41 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Method to calculate the number of days an item is overdue Superclass
+	 * method defaults to 1 month borrowing period
+	 * 
+	 * @return
+	 */
+	public int daysOverDue() {
+		Calendar now = new GregorianCalendar();
+		if (now.get(Calendar.MONTH) - dueDate.get(Calendar.MONTH) > 0) {
+			int daysDiff = (now.get(Calendar.DAY_OF_YEAR) - dueDate.get(Calendar.DAY_OF_YEAR)) - 30;
+			System.out.println("Days OVer Due = " + daysDiff);
+			return daysDiff;
+
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Method to calculate the number of hours an item is overdue Superclass
+	 * method defaults to 2 hour borrowing period
+	 * 
+	 * @return
+	 */
+	public double hoursOverDue() {
+		Calendar now = new GregorianCalendar();
+
+		double hoursDiff = (now.getTimeInMillis() - dueDate.getTimeInMillis()) / 3600000;
+		if (hoursDiff > 2) {
+			return hoursDiff - 2;
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -239,6 +291,19 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		}
 	}
 
+	/**
+	 * Simplified, readable date format
+	 * 
+	 * @return
+	 */
+	public String getConvertedDueDate() {
+		if (dueDate != null) {
+			DateFormat dateFormat = new SimpleDateFormat("MM/dd/YYYY hh:mm");
+			return dateFormat.format(dueDate.getTime());
+		}
+		return dueDate.toString();
+	}
+
 	@Override
 	public String toString() {
 		return "LoanableItem [type= " + this.getClass().getSimpleName() + " title= " + title + ", id=" + id
@@ -255,25 +320,21 @@ public abstract class LoanableItem implements Matchable<String>, Serializable {
 		visitor.visit(this);
 	}
 
-	public double computeFine() {
-		double totalFine = 0;
-		if (this instanceof Book) {
-			Book bk = (Book) this;
-			totalFine = bk.computeFineItem(this);
+	/**
+	 * Method to calculate the fine based on number of days an item is overdue.
+	 * Superclass method
+	 * 
+	 * @return
+	 */
+	public double computeFineItem() {
+		double fineTotal = 0.0;
+		if (isReserved() && this.isOverDue()) {
+			fineTotal = hoursOverDue();
 		}
-		if (this instanceof Camera) {
-			Camera cam = (Camera) this;
-			totalFine = cam.computeFineItem(this);
+		if (this.isOverDue()) {
+			fineTotal = (.1 + ((daysOverDue() - 1) * .05));
 		}
-		if (this instanceof DVD) {
-			Camera dvd = (Camera) this;
-			totalFine = dvd.computeFineItem(this);
-		}
-		if (this instanceof Laptop) {
-			Laptop lap = (Laptop) this;
-			totalFine = lap.computeFineItem(this);
-		}
-		return totalFine;
+		return fineTotal;
 	}
 
 }

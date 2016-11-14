@@ -39,7 +39,6 @@ public class Member implements Serializable, Matchable<String> {
 	private String address;
 	private String phone;
 	private String id;
-	private int trackPayment;
 	private double fineBalance;
 	private static final String MEMBER_STRING = "M";
 	private List<LoanableItem> itemsBorrowed = new LinkedList<LoanableItem>();
@@ -90,6 +89,9 @@ public class Member implements Serializable, Matchable<String> {
 	public boolean returnItem(LoanableItem loanableItem) {
 		if (itemsBorrowed.remove(loanableItem)) {
 			transactions.add(new Transaction("Item returned ", loanableItem.getTitle()));
+			if (loanableItem.isOverDue()) {
+				fineBalance += loanableItem.computeFineItem();
+			}
 			return true;
 		}
 		return false;
@@ -307,48 +309,26 @@ public class Member implements Serializable, Matchable<String> {
 	}
 
 	/**
-	 * @return the balance
+	 * Computes the total fine balance
+	 * 
+	 * @return double
 	 */
-	public void calcBalance() {
-		// check if item is overdue
-		// look at loanable items issued
-		// checkOverdue(loanableitem)
-		// for (ListIterator<LoanableItem> iterator =
-		// itemsBorrowed.listIterator(); iterator.hasNext();) {
-		// LoanableItem aLoanableItem = iterator.next();
-		// String id = aLoanableItem.getId();
-		// if (id.equals(loanableItem.getId())) {
-		// transactions.add(new Transaction("Item renewed ",
-		// loanableItem.getTitle()));
-		// return true;
-		// }
-		// }
-	}
-
-	/**
-	 * @return the balance
-	 */
-	public double calculateBalance() {
-		double balance = 0.0;
-		for (LoanableItem item : itemsBorrowed) {
-			balance += item.computeFine();
-		}
-		balance -= trackPayment;
-		this.fineBalance = balance;
-		return balance;
-	}
-
 	public double computeFineBalance() {
 		double balance = 0.0;
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
 			if (item.isOverDue()) {
-				// balance += item.computeFine();
+				balance += item.computeFineItem();
 			}
 		}
 		return balance + fineBalance;
 	}
 
+	/**
+	 * Getter for a member balance
+	 * 
+	 * @return double
+	 */
 	public double getBalance() {
 		return fineBalance;
 	}
@@ -358,11 +338,15 @@ public class Member implements Serializable, Matchable<String> {
 	 *            reduces fineBalace by amount paid
 	 */
 	public double payBalance(double payment) {
-		trackPayment += payment;
 		this.fineBalance = (this.fineBalance - payment);
 		return this.fineBalance;
 	}
 
+	/**
+	 * Method to check if a member has a reserved item checked out
+	 * 
+	 * @return boolean
+	 */
 	public boolean hasReservedItemCheckedOut() {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
@@ -371,6 +355,21 @@ public class Member implements Serializable, Matchable<String> {
 				if (b.isReserved()) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Method to check if a member has a camera checked out
+	 * 
+	 * @return boolean
+	 */
+	public boolean hasCameraCheckedOut() {
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
+			LoanableItem item = iterator.next();
+			if (item instanceof Camera) {
+				return true;
 			}
 		}
 		return false;

@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -147,6 +148,27 @@ public class UserInterface {
 	}
 
 	/**
+	 * Converts the string to a double
+	 * 
+	 * @param prompt
+	 *            the string for prompting
+	 * @return the integer corresponding to the string
+	 * 
+	 */
+
+	public double getDouble(String prompt) {
+		do {
+			try {
+				String item = getToken(prompt);
+				Double number = Double.valueOf(item);
+				return number.doubleValue();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Please input a number ");
+			}
+		} while (true);
+	}
+
+	/**
 	 * Prompts for a date and gets a date object
 	 * 
 	 * @param prompt
@@ -191,7 +213,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out.println("Enter a number between 0 and 16 as explained below:");
+		System.out.println("Enter a number between 0 and 19 as explained below:");
 		System.out.println(EXIT + " to Exit\n");
 		System.out.println(ADD_MEMBER + " to add a member");
 		System.out.println(ADD_ITEMS + " to add items");
@@ -201,7 +223,7 @@ public class UserInterface {
 		System.out.println(RENEW_BOOKS + " to renew books ");
 		System.out.println(CHANGE_DUE_DATE + " to change the due date of an item");
 		System.out.println(REMOVE_MEMBERS + " to remove members");
-		System.out.println(REMOVE_BOOKS + " to remove books");
+		System.out.println(REMOVE_BOOKS + " to remove items");
 		System.out.println(PLACE_HOLD + " to place a hold on a book");
 		System.out.println(REMOVE_HOLD + " to remove a hold on a book");
 		System.out.println(PROCESS_HOLD + " to process holds");
@@ -286,30 +308,27 @@ public class UserInterface {
 	public void issueLoanableItems() {
 		LoanableItem result;
 		Member thisMember;
-		double currentBalance;
 		String memberID = getToken("Enter member id");
 		thisMember = library.searchMembership(memberID);
 		if (thisMember == null) {
 			System.out.println("No such member");
 			return;
 		}
-		currentBalance = thisMember.computeFineBalance();
-		if (currentBalance >= 5.0) {
+		if (thisMember.getBalance() >= 5.0) {
 			System.out.println("Items cannot be checked out if your balance is greater than or euqal to $5.00.");
-			System.out.println("Currently your balance is " + currentBalance);
+			System.out.println("Currently your balance is " + thisMember.getBalance());
 			if (yesOrNo("Would you like to make a payment now to reduce your balance?")) {
 				payBalance();
-			}
-			else {
+			} else {
 				return;
 			}
 		}
-		
+
 		do {
 			String bookID = getToken("Enter item id");
 			result = library.issueLoanableItem(memberID, bookID);
 			if (result != null) {
-				System.out.println(result.getTitle() + "   " + result.getDueDate());
+				System.out.println(result.getTitle() + "   " + result.getConvertedDueDate());
 			} else {
 				System.out.println("Item could not be issued");
 			}
@@ -319,15 +338,25 @@ public class UserInterface {
 		} while (true);
 	}
 
+	/**
+	 * Method to set a book to "reserved" Prompts for bookID
+	 */
 	public void changeReservedStatus() {
 		int result;
-		String bookID = getToken("Enter book id");
-		result = library.changeReservedStatus(bookID);
-		if (result == 7) {
-			System.out.println("Reserved is set");
-		} else {
-			System.out.println("Status not changed");
-		}
+		do {
+			String bookID = getToken("Enter book id");
+
+			result = library.changeReservedStatus(bookID);
+			if (result == 7) {
+				System.out.println("Reserved is set");
+			} else {
+				System.out.println("Status not changed");
+			}
+			if (!yesOrNo("Reserve more books?")) {
+				break;
+			}
+		} while (true);
+
 	}
 
 	/**
@@ -349,7 +378,7 @@ public class UserInterface {
 			if (yesOrNo(book.getTitle())) {
 				result = library.renewItem(book.getId(), memberID);
 				if (result != null) {
-					System.out.println(result.getTitle() + "   " + result.getDueDate());
+					System.out.println(result.getTitle() + "   due date: " + result.getDueDate());
 				} else {
 					System.out.println("Item is not renewable");
 				}
@@ -357,11 +386,20 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Method to set the due date of an item Prompts for Simple Date
+	 */
 	public void changeDueDate() {
-		String itemID = getToken("Enter item id");
+		do {
+			String itemID = getToken("Enter item id");
 
-		Calendar date = getDate("Please enter the new due date as mm/dd/yy");
-		library.changeDueDate(itemID, date);
+			Calendar date = getDate("Please enter the new due date as mm/dd/yy");
+			library.changeDueDate(itemID, date);
+
+			if (!yesOrNo("Change More Due Dates?")) {
+				break;
+			}
+		} while (true);
 	}
 
 	/**
@@ -374,7 +412,6 @@ public class UserInterface {
 		int result;
 		do {
 			String bookID = getToken("Enter item id");
-			// Add overdue check here
 			result = library.returnLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -410,7 +447,7 @@ public class UserInterface {
 	public void removeLoanableItems() {
 		int result;
 		do {
-			String bookID = getToken("Enter book id");
+			String bookID = getToken("Enter item id");
 			result = library.removeLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -426,7 +463,7 @@ public class UserInterface {
 				System.out.println("Item could not be removed");
 				break;
 			case Library.OPERATION_COMPLETED:
-				System.out.println(" Book has been removed");
+				System.out.println(" Item has been removed");
 				break;
 			default:
 				System.out.println("An error has occurred");
@@ -437,10 +474,24 @@ public class UserInterface {
 		} while (true);
 	}
 
+	/**
+	 * Method to Remove a Member Prompts for member ID
+	 */
+
 	public void removeMembers() {
 		int result;
 		String memberID = getToken("Enter memberID");
 		result = library.removeMember(memberID);
+		switch (result) {
+		case Library.NO_SUCH_MEMBER:
+			System.out.println("Not a valid member ID");
+			break;
+		case Library.OPERATION_COMPLETED:
+			System.out.println("Member Removed");
+			break;
+		default:
+			System.out.println("Member not removed");
+		}
 
 	}
 
@@ -583,27 +634,45 @@ public class UserInterface {
 		library.processLoanableItems(PrintFormat.instance());
 	}
 
+	/**
+	 * Prints all items that are overdue
+	 */
 	public void printOverdue() {
 		library.processLoanableItems(PrintOverdue.instance());
 	}
 
+	/**
+	 * Method to pay down a member's balance Prompts for a number displays in
+	 * formatted dollar amount
+	 */
 	public void payBalance() {
-		Member result;
+
+		Member result = null;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
-		double owe = result.calculateBalance();
-		System.out.println("Current balance: " + owe);
+		if (result == null) {
+			System.out.println("Invalid member id");
+			if (yesOrNo("Try again?")) {
+				payBalance();
+			} else {
+				return;
+			}
+		} else {
+			double owe = (double) Math.round(result.getBalance() * 100) / 100;
+			DecimalFormat decimalNumber = new DecimalFormat(".00");
 
-		do {
-			if (result != null && owe != 0.0) {
-				String pay = getToken("Please enter payment amount: ");
-				double payDouble = result.calculateBalance();
-				double remain = result.payBalance(payDouble);
-				System.out.println("Remaining balance: " + remain);
+			System.out.println("Current balance: $" + decimalNumber.format(owe));
+
+			if (owe != 0.0) {
+				Double pay = getDouble("Please enter payment amount: ");
+				double remain = result.payBalance(pay);
+				remain = (double) Math.round(remain * 100) / 100;
+				System.out.println("Remaining balance: $" + decimalNumber.format(remain));
 			} else {
 				System.out.println("No balance to pay.");
 			}
-		} while (true);
+			return;
+		}
 	}
 
 	/**

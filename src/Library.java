@@ -201,15 +201,6 @@ public class Library implements Serializable {
 		return member.removeHold(itemId) && item.removeHold(memberId) ? OPERATION_COMPLETED : NO_HOLD_FOUND;
 	}
 
-	public int setReserved(String itemId) {
-		LoanableItem item = catalog.search(itemId);
-		if (item == null) {
-			return (ITEM_NOT_FOUND);
-		}
-
-		return OPERATION_COMPLETED;
-	}
-
 	/**
 	 * Removes all out-of-date holds
 	 */
@@ -249,9 +240,21 @@ public class Library implements Serializable {
 		if (!(item.issue(member) && member.issue(item))) {
 			return null;
 		}
+		if (checkRestrictions(member)) {
+			return null;
+		}
+		if (member.hasReservedItemCheckedOut() && item.isReserved()) {
+			return null;
+		}
 		return (item);
 	}
 
+	/**
+	 * Method to set the status of an item to reserved
+	 * 
+	 * @param itemId
+	 * @return int
+	 */
 	public int changeReservedStatus(String itemId) {
 		LoanableItem item = catalog.search(itemId);
 
@@ -261,12 +264,19 @@ public class Library implements Serializable {
 			if (item instanceof Book) {
 				Book book = (Book) item;
 				book.setReserved(true);
-				return 1;
+				return OPERATION_COMPLETED;
 			}
 		}
 		return 0;
 	}
 
+	/**
+	 * Method to change the due date of an item
+	 * 
+	 * @param itemId
+	 * @param dueDate
+	 * @return int
+	 */
 	public int changeDueDate(String itemId, Calendar dueDate) {
 
 		LoanableItem item = catalog.search(itemId);
@@ -325,6 +335,12 @@ public class Library implements Serializable {
 		}
 	}
 
+	/**
+	 * Method to return the current balance for a Member
+	 * 
+	 * @param memberId
+	 * @return double
+	 */
 	public double getMemberBalance(String memberId) {
 		Member member = memberList.search(memberId);
 		if (member == null) {
@@ -358,9 +374,28 @@ public class Library implements Serializable {
 		return (OPERATION_FAILED);
 	}
 
+	/**
+	 * Method to remove a member from MenberList only allows removal if no
+	 * balance and no items issued
+	 * 
+	 * @param memberID
+	 * @return
+	 */
 	public int removeMember(String memberID) {
-		System.out.println("I don't do anything yet");
-		return OPERATION_COMPLETED;
+		Member member = memberList.search(memberID);
+
+		if (member == null) {
+			return (NO_SUCH_MEMBER);
+		}
+		if (member.getBalance() == 0 && !member.getLoanableItemsIssued().hasNext()) {
+			System.out.println();
+			// if (member.getBalance() == 0 && member.getLoanableItemsIssued()
+			// == null) {
+			memberList.removeMember(memberID);
+			System.out.println(member);
+			return (OPERATION_COMPLETED);
+		}
+		return (OPERATION_FAILED);
 	}
 
 	/**
@@ -383,9 +418,12 @@ public class Library implements Serializable {
 			return (OPERATION_FAILED);
 		}
 		if (loanableItem.hasHold()) {
+
 			return (ITEM_HAS_HOLD);
+		} else {
+
+			return (OPERATION_COMPLETED);
 		}
-		return (OPERATION_COMPLETED);
 	}
 
 	/**
@@ -406,6 +444,10 @@ public class Library implements Serializable {
 		return member.getTransactions(date);
 	}
 
+	/**
+	 * 
+	 * @param visitor
+	 */
 	public void processLoanableItems(LoanableItemVisitor visitor) {
 		for (Iterator<LoanableItem> itemIterator = catalog.iterator(); itemIterator.hasNext();) {
 			itemIterator.next().accept(visitor);
@@ -492,6 +534,20 @@ public class Library implements Serializable {
 			return null;
 		} else {
 			return member;
+		}
+	}
+
+	/**
+	 * Method to check if a member has a balance of $5 or more
+	 * 
+	 * @param member
+	 * @return boolean
+	 */
+	public boolean checkRestrictions(Member member) {
+		if (member.getFineBalance() >= 5.0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
