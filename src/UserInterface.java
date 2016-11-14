@@ -647,7 +647,7 @@ public class UserInterface {
 	 */
 	public void payBalance() {
 
-		Member result;
+		Member result = null;
 		String memberID = getToken("Enter member id");
 		result = library.validateMember(memberID);
 		if (result == null) {
@@ -657,21 +657,22 @@ public class UserInterface {
 			} else {
 				return;
 			}
-		}
-		double owe = (double) Math.round(result.getBalance() * 100) / 100;
-		DecimalFormat decimalNumber = new DecimalFormat(".00");
-
-		System.out.println("Current balance: $" + decimalNumber.format(owe));
-
-		if (owe != 0.0) {
-			Double pay = getDouble("Please enter payment amount: ");
-			double remain = result.payBalance(pay);
-			remain = (double) Math.round(remain * 100) / 100;
-			System.out.println("Remaining balance: $" + decimalNumber.format(remain));
 		} else {
-			System.out.println("No balance to pay.");
-		}
+			double owe = (double) Math.round(result.getBalance() * 100) / 100;
+			DecimalFormat decimalNumber = new DecimalFormat(".00");
 
+			System.out.println("Current balance: $" + decimalNumber.format(owe));
+
+			if (owe != 0.0) {
+				Double pay = getDouble("Please enter payment amount: ");
+				double remain = result.payBalance(pay);
+				remain = (double) Math.round(remain * 100) / 100;
+				System.out.println("Remaining balance: $" + decimalNumber.format(remain));
+			} else {
+				System.out.println("No balance to pay.");
+			}
+			return;
+		}
 	}
 
 	/**
