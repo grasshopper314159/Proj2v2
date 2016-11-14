@@ -48,7 +48,7 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 
 	/**
 	 * @param isReserved
-	 *            the isReserved to set
+	 *            the status of isReserved
 	 */
 	public void setReserved(boolean isReserved) {
 		this.isReserved = isReserved;
@@ -81,10 +81,8 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		if (super.issue(member)) {
 			if (isReserved != true) {
 				dueDate.add(Calendar.MONTH, 1);
-				tempCal = dueDate;
 			} else {
 				dueDate.add(Calendar.HOUR, 2);
-				tempCal = dueDate;
 			}
 			return true;
 		}
@@ -100,10 +98,19 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 		return author;
 	}
 
+	/**
+	 * Getter for bookFine
+	 * 
+	 * @return bookFine
+	 */
 	public int getBookFine() {
 		return bookFine;
 	}
 
+	/**
+	 * Setter for bookFine
+	 * 
+	 */
 	public void setBookFine(int bookFine) {
 		this.bookFine = bookFine;
 	}
@@ -115,30 +122,6 @@ public class Book extends LoanableItem implements Serializable, Matchable<String
 	@Override
 	public String toString() {
 		return super.toString() + " author " + author + " borrowed by " + borrowedBy;
-	}
-
-	@Override
-	public double computeFineItem() {
-		int totalHrs = 0;
-		int fee = 0;
-		if (this.isOverDue() && (this instanceof Book)) {
-			if (this.isReserved()) {
-				totalHrs += ((this.getDueDate().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
-				bookFine += 1.0 * totalHrs;
-				tempCal.add(Calendar.HOUR, totalHrs);
-			} else {
-				totalHrs += ((this.getDueDate().getTimeInMillis() - tempCal.getTimeInMillis()) / 3600000);
-				fee = totalHrs / 24;
-				if (fee > 24 && (bookFine >= 0.10)) {
-					bookFine += ((fee / 24) * 0.05);
-				} else {
-					bookFine += 0.10;
-				}
-			}
-			tempCal.add(Calendar.HOUR, totalHrs);
-		}
-		System.out.println("Book Fine from Book.computeFineItem " + bookFine);
-		return bookFine;
 	}
 
 	/**

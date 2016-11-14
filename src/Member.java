@@ -309,36 +309,10 @@ public class Member implements Serializable, Matchable<String> {
 	}
 
 	/**
-	 * @return the balance
+	 * Computes the total fine balance
+	 * 
+	 * @return double
 	 */
-	public void calcBalance() {
-		// check if item is overdue
-		// look at loanable items issued
-		// checkOverdue(loanableitem)
-		// for (ListIterator<LoanableItem> iterator =
-		// itemsBorrowed.listIterator(); iterator.hasNext();) {
-		// LoanableItem aLoanableItem = iterator.next();
-		// String id = aLoanableItem.getId();
-		// if (id.equals(loanableItem.getId())) {
-		// transactions.add(new Transaction("Item renewed ",
-		// loanableItem.getTitle()));
-		// return true;
-		// }
-		// }
-	}
-
-	/**
-	 * @return the balance
-	 */
-	public double calculateBalance() {
-		// double balance = 0.0;
-		// for (LoanableItem item : itemsBorrowed) {
-		// balance += item.computeFine();
-		// }
-		// this.fineBalance = balance ;
-		return fineBalance;
-	}
-
 	public double computeFineBalance() {
 		double balance = 0.0;
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
@@ -350,6 +324,11 @@ public class Member implements Serializable, Matchable<String> {
 		return balance + fineBalance;
 	}
 
+	/**
+	 * Getter for a member balance
+	 * 
+	 * @return double
+	 */
 	public double getBalance() {
 		return fineBalance;
 	}
@@ -363,6 +342,11 @@ public class Member implements Serializable, Matchable<String> {
 		return this.fineBalance;
 	}
 
+	/**
+	 * Method to check if a member has a reserved item checked out
+	 * 
+	 * @return boolean
+	 */
 	public boolean hasReservedItemCheckedOut() {
 		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
 			LoanableItem item = iterator.next();
@@ -371,6 +355,21 @@ public class Member implements Serializable, Matchable<String> {
 				if (b.isReserved()) {
 					return true;
 				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Method to check if a member has a camera checked out
+	 * 
+	 * @return boolean
+	 */
+	public boolean hasCameraCheckedOut() {
+		for (Iterator<LoanableItem> iterator = itemsBorrowed.iterator(); iterator.hasNext();) {
+			LoanableItem item = iterator.next();
+			if (item instanceof Camera) {
+				return true;
 			}
 		}
 		return false;

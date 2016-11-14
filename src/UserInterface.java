@@ -148,6 +148,27 @@ public class UserInterface {
 	}
 
 	/**
+	 * Converts the string to a double
+	 * 
+	 * @param prompt
+	 *            the string for prompting
+	 * @return the integer corresponding to the string
+	 * 
+	 */
+
+	public double getDouble(String prompt) {
+		do {
+			try {
+				String item = getToken(prompt);
+				Double number = Double.valueOf(item);
+				return number.doubleValue();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Please input a number ");
+			}
+		} while (true);
+	}
+
+	/**
 	 * Prompts for a date and gets a date object
 	 * 
 	 * @param prompt
@@ -317,6 +338,9 @@ public class UserInterface {
 		} while (true);
 	}
 
+	/**
+	 * Method to set a book to "reserved" Prompts for bookID
+	 */
 	public void changeReservedStatus() {
 		int result;
 		do {
@@ -362,6 +386,9 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Method to set the due date of an item Prompts for Simple Date
+	 */
 	public void changeDueDate() {
 		do {
 			String itemID = getToken("Enter item id");
@@ -385,7 +412,6 @@ public class UserInterface {
 		int result;
 		do {
 			String bookID = getToken("Enter item id");
-			// Add overdue check here
 			result = library.returnLoanableItem(bookID);
 			switch (result) {
 			case Library.ITEM_NOT_FOUND:
@@ -447,6 +473,10 @@ public class UserInterface {
 			}
 		} while (true);
 	}
+
+	/**
+	 * Method to Remove a Member Prompts for member ID
+	 */
 
 	public void removeMembers() {
 		int result;
@@ -604,10 +634,17 @@ public class UserInterface {
 		library.processLoanableItems(PrintFormat.instance());
 	}
 
+	/**
+	 * Prints all items that are overdue
+	 */
 	public void printOverdue() {
 		library.processLoanableItems(PrintOverdue.instance());
 	}
 
+	/**
+	 * Method to pay down a member's balance Prompts for a number displays in
+	 * formatted dollar amount
+	 */
 	public void payBalance() {
 
 		Member result;
@@ -621,21 +658,18 @@ public class UserInterface {
 				return;
 			}
 		}
-		double owe = (double) Math.round(result.calculateBalance() * 100) / 100;
+		double owe = (double) Math.round(result.getBalance() * 100) / 100;
 		DecimalFormat decimalNumber = new DecimalFormat(".00");
 
 		System.out.println("Current balance: $" + decimalNumber.format(owe));
 
 		if (owe != 0.0) {
-			String pay = getToken("Please enter payment amount: ");
-			double payDouble = Double.parseDouble(pay);
-			double remain = result.payBalance(payDouble);
+			Double pay = getDouble("Please enter payment amount: ");
+			double remain = result.payBalance(pay);
 			remain = (double) Math.round(remain * 100) / 100;
 			System.out.println("Remaining balance: $" + decimalNumber.format(remain));
-			// break;
 		} else {
 			System.out.println("No balance to pay.");
-			// break;
 		}
 
 	}
